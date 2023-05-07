@@ -4,10 +4,13 @@ from typing import Dict
 from typing import Tuple
 from typing import Union
 
+import json
+
 from borValBadgeDbServer.models.admin_purge_badge_infos_get200_response import AdminPurgeBadgeInfosGet200Response  # noqa: E501
 from borValBadgeDbServer.models.database import Database  # noqa: E501
 from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
 from borValBadgeDbServer import util
+from borValBadgeDbServer.db.db import dbLock, cachedBadgeDB, badgeDB
 
 
 def admin_dump_dbget():  # noqa: E501
@@ -18,7 +21,19 @@ def admin_dump_dbget():  # noqa: E501
 
     :rtype: Union[Database, Tuple[Database, int], Tuple[Database, int, Dict[str, str]]
     """
-    return 'do some magic!'
+
+    dbLock.acquire()
+    global cachedBadgeDB
+    cachedBadgeDB = json.dumps(badgeDB.to_dict(), sort_keys=True, indent=2) + "\n"
+
+    ret = connexion.lifecycle.ConnexionResponse(
+        status_code=200,
+        content_type="application/json",
+        mimetype="text/plain",
+        body=cachedBadgeDB
+    )
+    dbLock.release()
+    return ret
 
 
 def admin_purge_badge_infos_get(badge_ids):  # noqa: E501

@@ -7,6 +7,7 @@ from typing import Union
 from borValBadgeDbServer.models.database import Database  # noqa: E501
 from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
 from borValBadgeDbServer import util
+from borValBadgeDbServer.db.db import dbLock, cachedBadgeDB
 
 
 def user_dump_dbget():  # noqa: E501
@@ -17,7 +18,16 @@ def user_dump_dbget():  # noqa: E501
 
     :rtype: Union[Database, Tuple[Database, int], Tuple[Database, int, Dict[str, str]]
     """
-    return 'do some magic!'
+
+    dbLock.acquire()
+    ret = connexion.lifecycle.ConnexionResponse(
+        status_code=200,
+        content_type="application/json",
+        mimetype="text/plain",
+        body=cachedBadgeDB
+    )
+    dbLock.release()
+    return ret
 
 
 def user_request_check_get(universe_id):  # noqa: E501

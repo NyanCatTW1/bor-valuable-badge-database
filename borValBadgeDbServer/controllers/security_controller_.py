@@ -1,4 +1,5 @@
 from typing import List
+import os
 
 
 def info_from_ApiKeyAuth(api_key, required_scopes):
@@ -14,5 +15,9 @@ def info_from_ApiKeyAuth(api_key, required_scopes):
     :return: Information attached to provided api_key or None if api_key is invalid or does not allow access to called API
     :rtype: dict | None
     """
-    return {'uid': 'user_id'}
 
+    correctKey = os.environ.get("BOR_VAL_BADGE_DB_SERVER_API_KEY")
+    if correctKey is None or api_key != correctKey:
+        return None
+
+    return {}
