@@ -26,6 +26,7 @@ def checkWorker(universeId):
     dbLock.release()
 
     cursor = None
+    name = None
     while True:
         oldCount = len(universe.badges)
         url = f"https://badges.roblox.com/v1/universes/{universeId}/badges?limit=100&sortOrder=Desc"
@@ -35,6 +36,7 @@ def checkWorker(universeId):
         resp = json.loads(requests.get(url).text)
         if "data" in resp:
             for badge in resp["data"]:
+                name = badge["awardingUniverse"]["name"]
                 created = int(time.mktime(isoparse(badge["created"]).timetuple()) * 1000)
                 universe.badges[str(badge["id"])] = BadgeInfo(badge["id"], True, created, int(universeId))
 
@@ -44,6 +46,8 @@ def checkWorker(universeId):
         if cursor is None or oldCount == universe.badge_count:
             break
 
+    if name is not None:
+        universe.name = name
     universe.last_checked = util.getTimestamp()
 
     if len(universe.badges) != 0:
@@ -58,12 +62,26 @@ def checkWorker(universeId):
 
 
 def refreshValue(universeId):
+    valuableBadges = set()
+
+    days = {}
+    for badgeId in badgeDB.universes[universeId].badges.keys():
+        day = badgeDB.universes[universeId].badges[badgeId].created // (24 * 60 * 60 * 1000)
+        if day not in days:
+            days[day] = []
+        days[day].append(int(badgeId))
+
+    for day in days.values():
+        valuableBadges.update(sorted(day)[5:])
+
     badgesAffected = 0
     for badgeId in badgeDB.universes[universeId].badges.keys():
         oldValue = badgeDB.universes[universeId].badges[badgeId].value
 
         if int(badgeId) <= 2124949326:
             newValue = "Legacy"
+        elif int(badgeId) in valuableBadges:
+            newValue = "Valuable"
         else:
             newValue = "Free"
 
