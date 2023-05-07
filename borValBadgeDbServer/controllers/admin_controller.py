@@ -4,10 +4,10 @@ from typing import Dict
 from typing import Tuple
 from typing import Union
 
-from openapi_server.models.admin_purge_badge_infos_get200_response import AdminPurgeBadgeInfosGet200Response  # noqa: E501
-from openapi_server.models.database import Database  # noqa: E501
-from openapi_server.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
-from openapi_server import util
+from borValBadgeDbServer.models.admin_purge_badge_infos_get200_response import AdminPurgeBadgeInfosGet200Response  # noqa: E501
+from borValBadgeDbServer.models.database import Database  # noqa: E501
+from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
+from borValBadgeDbServer import util
 
 
 def admin_dump_dbget():  # noqa: E501

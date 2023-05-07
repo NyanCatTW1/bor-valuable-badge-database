@@ -6,10 +6,10 @@ import unittest
 from flask import json
 from six import BytesIO
 
-from openapi_server.models.admin_purge_badge_infos_get200_response import AdminPurgeBadgeInfosGet200Response  # noqa: E501
-from openapi_server.models.database import Database  # noqa: E501
-from openapi_server.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
-from openapi_server.test import BaseTestCase
+from borValBadgeDbServer.models.admin_purge_badge_infos_get200_response import AdminPurgeBadgeInfosGet200Response  # noqa: E501
+from borValBadgeDbServer.models.database import Database  # noqa: E501
+from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
+from borValBadgeDbServer.test import BaseTestCase
 
 
 class TestAdminController(BaseTestCase):

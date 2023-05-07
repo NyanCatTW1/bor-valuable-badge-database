@@ -4,9 +4,9 @@ from typing import Dict
 from typing import Tuple
 from typing import Union
 
-from openapi_server.models.query_by_badge_ids_get200_response import QueryByBadgeIdsGet200Response  # noqa: E501
-from openapi_server.models.query_by_universe_ids_get200_response import QueryByUniverseIdsGet200Response  # noqa: E501
-from openapi_server import util
+from borValBadgeDbServer.models.query_by_badge_ids_get200_response import QueryByBadgeIdsGet200Response  # noqa: E501
+from borValBadgeDbServer.models.query_by_universe_ids_get200_response import QueryByUniverseIdsGet200Response  # noqa: E501
+from borValBadgeDbServer import util
 
 
 def query_by_badge_ids_get(badge_ids):  # noqa: E501

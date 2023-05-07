@@ -30,7 +30,7 @@ paths:
       summary: Get a dump of the entire database right now
       tags:
       - admin
-      x-openapi-router-controller: openapi_server.controllers.admin_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
   /admin/purgeBadgeInfos:
     get:
       operationId: admin_purge_badge_infos_get
@@ -57,7 +57,7 @@ paths:
       summary: Purge cached info of badges
       tags:
       - admin
-      x-openapi-router-controller: openapi_server.controllers.admin_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
     post:
       operationId: admin_purge_badge_infos_post
       requestBody:
@@ -80,7 +80,7 @@ paths:
       summary: Purge cached info of badges
       tags:
       - admin
-      x-openapi-router-controller: openapi_server.controllers.admin_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
   /admin/purgeUniverseInfos:
     get:
       operationId: admin_purge_universe_infos_get
@@ -107,7 +107,7 @@ paths:
       summary: Purge cached info of universes and all associated badges
       tags:
       - admin
-      x-openapi-router-controller: openapi_server.controllers.admin_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
     post:
       operationId: admin_purge_universe_infos_post
       requestBody:
@@ -130,7 +130,7 @@ paths:
       summary: Purge cached info of universes and all associated badges
       tags:
       - admin
-      x-openapi-router-controller: openapi_server.controllers.admin_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
   /admin/refreshValue:
     get:
       operationId: admin_refresh_value_get
@@ -146,7 +146,7 @@ paths:
       summary: Redetermine values of all badges in the database
       tags:
       - admin
-      x-openapi-router-controller: openapi_server.controllers.admin_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
   /admin/startCheck:
     get:
       operationId: admin_start_check_get
@@ -171,7 +171,7 @@ paths:
       summary: Start a check/recheck of an universe
       tags:
       - admin
-      x-openapi-router-controller: openapi_server.controllers.admin_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
   /query/byBadgeIds:
     get:
       operationId: query_by_badge_ids_get
@@ -196,7 +196,7 @@ paths:
       summary: Look up creation dates and values of badge ids
       tags:
       - query
-      x-openapi-router-controller: openapi_server.controllers.query_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.query_controller
     post:
       operationId: query_by_badge_ids_post
       requestBody:
@@ -217,7 +217,7 @@ paths:
       summary: Look up creation dates and values of badge ids
       tags:
       - query
-      x-openapi-router-controller: openapi_server.controllers.query_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.query_controller
   /query/byUniverseIds:
     get:
       operationId: query_by_universe_ids_get
@@ -242,7 +242,7 @@ paths:
       summary: Look up creation dates and values of all badges under universes
       tags:
       - query
-      x-openapi-router-controller: openapi_server.controllers.query_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.query_controller
     post:
       operationId: query_by_universe_ids_post
       requestBody:
@@ -263,7 +263,7 @@ paths:
       summary: Look up creation dates and values of all badges under universes
       tags:
       - query
-      x-openapi-router-controller: openapi_server.controllers.query_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.query_controller
   /user/dumpDB:
     get:
       operationId: user_dump_dbget
@@ -277,7 +277,7 @@ paths:
       summary: Get a dump of the entire database. Updates every five minutes
       tags:
       - user
-      x-openapi-router-controller: openapi_server.controllers.user_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.user_controller
   /user/requestCheck:
     get:
       operationId: user_request_check_get
@@ -301,7 +301,7 @@ paths:
         was last checked <5 mins ago
       tags:
       - user
-      x-openapi-router-controller: openapi_server.controllers.user_controller
+      x-openapi-router-controller: borValBadgeDbServer.controllers.user_controller
 components:
   schemas:
     BadgeInfo:
@@ -521,4 +521,4 @@ components:
       in: header
       name: api_key
       type: apiKey
-      x-apikeyInfoFunc: openapi_server.controllers.security_controller_.info_from_ApiKeyAuth
+      x-apikeyInfoFunc: borValBadgeDbServer.controllers.security_controller_.info_from_ApiKeyAuth

@@ -6,9 +6,9 @@ import unittest
 from flask import json
 from six import BytesIO
 
-from openapi_server.models.query_by_badge_ids_get200_response import QueryByBadgeIdsGet200Response  # noqa: E501
-from openapi_server.models.query_by_universe_ids_get200_response import QueryByUniverseIdsGet200Response  # noqa: E501
-from openapi_server.test import BaseTestCase
+from borValBadgeDbServer.models.query_by_badge_ids_get200_response import QueryByBadgeIdsGet200Response  # noqa: E501
+from borValBadgeDbServer.models.query_by_universe_ids_get200_response import QueryByUniverseIdsGet200Response  # noqa: E501
+from borValBadgeDbServer.test import BaseTestCase
 
 
 class TestQueryController(BaseTestCase):
