@@ -109,8 +109,8 @@ class TestAdminController(BaseTestCase):
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_admin_refresh_value_get(self):
-        """Test case for admin_refresh_value_get
+    def test_admin_refresh_values_get(self):
+        """Test case for admin_refresh_values_get
 
         Redetermine values of all badges in the database
         """

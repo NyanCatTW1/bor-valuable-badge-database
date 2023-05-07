@@ -7,10 +7,11 @@ import time
 from borValBadgeDbServer import util
 from borValBadgeDbServer.models.badge_info import BadgeInfo
 from borValBadgeDbServer.models.universe_info import UniverseInfo
-from borValBadgeDbServer.db.db import dbLock, badgeDB, updateBadgeIdCache
+from borValBadgeDbServer.db.db import dbLock, getBadgeDB, updateBadgeIdCache
 
 checkLock = Lock()
 checksInProgress = set()
+missingReports = set()
 
 
 def checkInProgress(universeId):
@@ -22,7 +23,7 @@ def checkInProgress(universeId):
 
 def checkWorker(universeId):
     dbLock.acquire()
-    universe: UniverseInfo = badgeDB.universes.get(universeId, UniverseInfo(int(universeId)))
+    universe: UniverseInfo = getBadgeDB().universes.get(universeId, UniverseInfo(int(universeId)))
     dbLock.release()
 
     cursor = None
@@ -52,21 +53,22 @@ def checkWorker(universeId):
 
     if len(universe.badges) != 0:
         dbLock.acquire()
-        badgeDB.universes[universeId] = universe
+        getBadgeDB().universes[universeId] = universe
         updateBadgeIdCache(universeId)
         dbLock.release()
 
     checkLock.acquire()
     checksInProgress.remove(universeId)
     checkLock.release()
+    print(f"Finished check on {universeId}")
 
 
 def refreshValue(universeId):
     valuableBadges = set()
 
     days = {}
-    for badgeId in badgeDB.universes[universeId].badges.keys():
-        day = badgeDB.universes[universeId].badges[badgeId].created // (24 * 60 * 60 * 1000)
+    for badgeId in getBadgeDB().universes[universeId].badges.keys():
+        day = getBadgeDB().universes[universeId].badges[badgeId].created // (24 * 60 * 60 * 1000)
         if day not in days:
             days[day] = []
         days[day].append(int(badgeId))
@@ -75,8 +77,8 @@ def refreshValue(universeId):
         valuableBadges.update(sorted(day)[5:])
 
     badgesAffected = 0
-    for badgeId in badgeDB.universes[universeId].badges.keys():
-        oldValue = badgeDB.universes[universeId].badges[badgeId].value
+    for badgeId in getBadgeDB().universes[universeId].badges.keys():
+        oldValue = getBadgeDB().universes[universeId].badges[badgeId].value
 
         if int(badgeId) <= 2124949326:
             newValue = "Legacy"
@@ -87,7 +89,7 @@ def refreshValue(universeId):
 
         if oldValue != newValue:
             badgesAffected += 1
-        badgeDB.universes[universeId].badges[badgeId].value = newValue
+        getBadgeDB().universes[universeId].badges[badgeId].value = newValue
     return badgesAffected
 
 
@@ -96,6 +98,37 @@ def startCheck(universeId):
         return
 
     checkLock.acquire()
+    print(f"Started check on {universeId}")
     checksInProgress.add(universeId)
-    Thread(target=checkWorker, args=[universeId]).start()
+    Thread(target=checkWorker, args=[universeId], daemon=True).start()
     checkLock.release()
+
+
+def missingReportWorker():
+    while True:
+        checkLock.acquire()
+        if len(missingReports) == 0:
+            checkLock.release()
+            time.sleep(0.01)
+            continue
+
+        toCheck = missingReports.pop()
+        checkLock.release()
+
+        url = f"https://badges.roblox.com/v1/badges/{toCheck}"
+        resp = json.loads(requests.get(url).text)
+        if "awardingUniverse" not in resp:
+            continue
+
+        universeId = str(resp["awardingUniverse"]["id"])
+        startCheck(universeId)
+
+
+def reportMissing(badgeIds):
+    checkLock.acquire()
+    global missingReports
+    oldLength = len(missingReports)
+    missingReports |= badgeIds
+    ret = len(missingReports) - oldLength
+    checkLock.release()
+    return ret

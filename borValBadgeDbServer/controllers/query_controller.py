@@ -4,7 +4,7 @@ from borValBadgeDbServer.models.query_by_universe_ids_get200_response import Que
 from borValBadgeDbServer.models.badge_info import BadgeInfo
 from borValBadgeDbServer.models.universe_info import UniverseInfo
 
-from borValBadgeDbServer.db.db import dbLock, badgeDB, getBadgeIdCache
+from borValBadgeDbServer.db.db import dbLock, getBadgeDB, getBadgeIdCache
 
 
 def query_by_badge_ids_get(badge_ids):  # noqa: E501
@@ -22,10 +22,10 @@ def query_by_badge_ids_get(badge_ids):  # noqa: E501
     ret = []
 
     dbLock.acquire()
-    for universeId in badgeDB.universes.keys():
+    for universeId in getBadgeDB().universes.keys():
         idsToGet = badge_ids & getBadgeIdCache(universeId)
         for badgeId in idsToGet:
-            ret.append(badgeDB.universes[universeId].badges[badgeId])
+            ret.append(getBadgeDB().universes[universeId].badges[badgeId])
         badge_ids -= idsToGet
     dbLock.release()
 
@@ -62,9 +62,9 @@ def query_by_universe_ids_get(universe_ids):  # noqa: E501
     universe_ids = {str(x) for x in universe_ids}
     ret = []
     dbLock.acquire()
-    idsToGet = universe_ids & set(badgeDB.universes.keys())
+    idsToGet = universe_ids & set(getBadgeDB().universes.keys())
     for universeId in idsToGet:
-        ret.append(badgeDB.universes[universeId])
+        ret.append(getBadgeDB().universes[universeId])
     dbLock.release()
 
     for missingId in universe_ids - idsToGet:

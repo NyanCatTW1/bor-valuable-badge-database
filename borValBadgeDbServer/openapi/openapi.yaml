@@ -133,7 +133,7 @@ paths:
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
   /admin/refreshValues:
     get:
-      operationId: admin_refresh_value_get
+      operationId: admin_refresh_values_get
       responses:
         "200":
           content:
@@ -287,6 +287,52 @@ paths:
                 $ref: '#/components/schemas/Database'
           description: OK
       summary: Get a dump of the entire database. Updates every five minutes
+      tags:
+      - user
+      x-openapi-router-controller: borValBadgeDbServer.controllers.user_controller
+  /user/reportMissing:
+    get:
+      operationId: user_report_missing_get
+      parameters:
+      - description: The CSV of badge ids
+        explode: true
+        in: query
+        name: badgeIds
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_user_reportMissing_get_200_response'
+          description: OK
+      summary: Run checks based on missing/unknown badge ids
+      tags:
+      - user
+      x-openapi-router-controller: borValBadgeDbServer.controllers.user_controller
+    post:
+      operationId: user_report_missing_post
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              example: "2124469124"
+              type: string
+        description: The CSV of badge ids
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_user_reportMissing_get_200_response'
+          description: OK
+      summary: Run checks based on missing/unknown badge ids
       tags:
       - user
       x-openapi-router-controller: borValBadgeDbServer.controllers.user_controller
@@ -507,6 +553,16 @@ components:
           title: checkInProgress
           type: boolean
       title: _user_requestCheck_get_200_response
+      type: object
+    _user_reportMissing_get_200_response:
+      example:
+        addedToQueue: 0
+      properties:
+        addedToQueue:
+          example: 0
+          title: addedToQueue
+          type: integer
+      title: _user_reportMissing_get_200_response
       type: object
     _admin_purgeBadgeInfos_get_200_response:
       example:

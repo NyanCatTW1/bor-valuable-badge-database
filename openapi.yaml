@@ -141,6 +141,54 @@ paths:
                   checkInProgress:
                     type: boolean
                     example: true
+  /user/reportMissing:
+    get:
+      tags:
+        - user
+      summary: Run checks based on missing/unknown badge ids
+      parameters:
+        - in: query
+          name: badgeIds
+          schema:
+            type: array
+            items:
+              type: integer
+          required: true
+          description: The CSV of badge ids
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  addedToQueue:
+                    type: integer
+                    example: 0
+    post:
+      tags:
+        - user
+      summary: Run checks based on missing/unknown badge ids
+      requestBody:
+        description: The CSV of badge ids
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 2124469124
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  addedToQueue:
+                    type: integer
+                    example: 0
   /user/dumpDB:
     get:
       tags:

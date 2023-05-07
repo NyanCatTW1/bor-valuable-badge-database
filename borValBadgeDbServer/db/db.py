@@ -11,7 +11,6 @@ from borValBadgeDbServer.models.database import Database
 from borValBadgeDbServer.util import getTimestamp
 
 from apscheduler.schedulers.sync import Scheduler
-from apscheduler.triggers.interval import IntervalTrigger
 
 dbScheduler = Scheduler()
 dbPath = None
@@ -19,6 +18,10 @@ dbLock = Lock()
 badgeDB: Database = None
 cachedBadgeDB = None
 cachedBadgeIdsPerUniverse = {}
+
+
+def getBadgeDB():
+    return badgeDB
 
 
 def getCachedBadgeDB():
@@ -69,9 +72,6 @@ def loadDatabase():
     for universeId in badgeDB.universes.keys():
         updateBadgeIdCache(universeId)
     dbLock.release()
-
-    dbScheduler.add_schedule(saveDatabase, IntervalTrigger(minutes=60))
-    dbScheduler.start_in_background()
 
 
 def saveDatabase():
