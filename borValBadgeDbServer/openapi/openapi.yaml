@@ -131,7 +131,7 @@ paths:
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-  /admin/refreshValue:
+  /admin/refreshValues:
     get:
       operationId: admin_refresh_value_get
       responses:

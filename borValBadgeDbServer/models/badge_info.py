@@ -15,7 +15,7 @@ class BadgeInfo(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, badge_id=None, found=None, created=None, awarding_universe=None, value=None):  # noqa: E501
+    def __init__(self, badge_id=0, found=True, created=0, awarding_universe=0, value="Free"):  # noqa: E501
         """BadgeInfo - a model defined in OpenAPI
 
         :param badge_id: The badge_id of this BadgeInfo.  # noqa: E501

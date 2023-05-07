@@ -16,6 +16,7 @@ dbPath = None
 dbLock = Lock()
 badgeDB: Database = None
 cachedBadgeDB = None
+cachedBadgeIdsPerUniverse = {}
 
 
 def getCachedBadgeDB():
@@ -25,6 +26,17 @@ def getCachedBadgeDB():
 def setCachedBadgeDB(newDB):
     global cachedBadgeDB
     cachedBadgeDB = newDB
+
+
+def getBadgeIdCache(universeId):
+    return cachedBadgeIdsPerUniverse[universeId]
+
+
+def updateBadgeIdCache(universeId):
+    if universeId not in badgeDB.universes and universeId in cachedBadgeIdsPerUniverse:
+        del cachedBadgeIdsPerUniverse[universeId]
+    else:
+        cachedBadgeIdsPerUniverse[universeId] = set(badgeDB.universes[universeId].badges.keys())
 
 
 def loadDatabase():
@@ -51,6 +63,9 @@ def loadDatabase():
             bakPath = dbPath + f"-{getTimestamp()}.bak"
             shutil.copy2(dbPath, bakPath)
             print(f"Copied {dbPath} to {bakPath}")
+
+    for universeId in badgeDB.universes.keys():
+        updateBadgeIdCache(universeId)
     dbLock.release()
 
     dbScheduler.add_schedule(saveDatabase, IntervalTrigger(minutes=5))

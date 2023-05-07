@@ -1,6 +1,5 @@
 # coding: utf-8
 
-import sys
 from setuptools import setup, find_packages
 
 NAME = "borValBadgeDbServer"
@@ -17,7 +16,9 @@ REQUIRES = [
     "connexion>=2.0.2",
     "swagger-ui-bundle>=0.0.2",
     "python_dateutil>=2.6.0",
-    "APScheduler"
+    "APScheduler",
+    "requests",
+    "python-dateutil"
 ]
 
 setup(

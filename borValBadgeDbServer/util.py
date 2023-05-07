@@ -1,7 +1,6 @@
 import datetime
 
 import six
-import typing
 from borValBadgeDbServer import typing_utils
 
 
@@ -68,8 +67,8 @@ def deserialize_date(string):
     :rtype: date
     """
     if string is None:
-      return None
-    
+        return None
+
     try:
         from dateutil.parser import parse
         return parse(string).date()
@@ -88,8 +87,8 @@ def deserialize_datetime(string):
     :rtype: datetime
     """
     if string is None:
-      return None
-    
+        return None
+
     try:
         from dateutil.parser import parse
         return parse(string)

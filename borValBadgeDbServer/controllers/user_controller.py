@@ -1,10 +1,5 @@
 import connexion
-import six
-from typing import Dict
-from typing import Tuple
-from typing import Union
 
-from borValBadgeDbServer.models.database import Database  # noqa: E501
 from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
 from borValBadgeDbServer import util
 from borValBadgeDbServer.db.db import dbLock, getCachedBadgeDB, badgeDB

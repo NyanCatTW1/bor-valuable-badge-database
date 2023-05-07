@@ -309,7 +309,7 @@ paths:
                   badgesAffected:
                     type: integer
                     example: 0
-  /admin/refreshValue:
+  /admin/refreshValues:
     get:
       tags:
       - admin

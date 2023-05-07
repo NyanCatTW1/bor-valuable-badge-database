@@ -119,7 +119,7 @@ class TestAdminController(BaseTestCase):
             'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
-            '/api/v3/admin/refreshValue',
+            '/api/v3/admin/refreshValues',
             method='GET',
             headers=headers)
         self.assert200(response,
