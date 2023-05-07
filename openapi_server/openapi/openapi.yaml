@@ -1,0 +1,524 @@
+openapi: 3.0.3
+info:
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: BoR Valuable Badge Database
+  version: 1.0.0
+servers:
+- url: https://example.com/api/v3
+tags:
+- description: Database lookup
+  name: query
+- description: Database management available to all users
+  name: user
+- description: Database management available to admins
+  name: admin
+paths:
+  /admin/dumpDB:
+    get:
+      operationId: admin_dump_dbget
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Get a dump of the entire database right now
+      tags:
+      - admin
+      x-openapi-router-controller: openapi_server.controllers.admin_controller
+  /admin/purgeBadgeInfos:
+    get:
+      operationId: admin_purge_badge_infos_get
+      parameters:
+      - description: The CSV of badge ids
+        explode: true
+        in: query
+        name: badgeIds
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_admin_purgeBadgeInfos_get_200_response'
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Purge cached info of badges
+      tags:
+      - admin
+      x-openapi-router-controller: openapi_server.controllers.admin_controller
+    post:
+      operationId: admin_purge_badge_infos_post
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              example: "2124469124"
+              type: string
+        description: The CSV of badge ids
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_admin_purgeBadgeInfos_get_200_response'
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Purge cached info of badges
+      tags:
+      - admin
+      x-openapi-router-controller: openapi_server.controllers.admin_controller
+  /admin/purgeUniverseInfos:
+    get:
+      operationId: admin_purge_universe_infos_get
+      parameters:
+      - description: The CSV of universe ids
+        explode: true
+        in: query
+        name: universeIds
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_admin_purgeBadgeInfos_get_200_response'
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Purge cached info of universes and all associated badges
+      tags:
+      - admin
+      x-openapi-router-controller: openapi_server.controllers.admin_controller
+    post:
+      operationId: admin_purge_universe_infos_post
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              example: "1159511221"
+              type: string
+        description: The CSV of universe ids
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_admin_purgeBadgeInfos_get_200_response'
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Purge cached info of universes and all associated badges
+      tags:
+      - admin
+      x-openapi-router-controller: openapi_server.controllers.admin_controller
+  /admin/refreshValue:
+    get:
+      operationId: admin_refresh_value_get
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_admin_purgeBadgeInfos_get_200_response'
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Redetermine values of all badges in the database
+      tags:
+      - admin
+      x-openapi-router-controller: openapi_server.controllers.admin_controller
+  /admin/startCheck:
+    get:
+      operationId: admin_start_check_get
+      parameters:
+      - description: The universe id to check
+        explode: true
+        in: query
+        name: universeId
+        required: true
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_user_requestCheck_get_200_response'
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Start a check/recheck of an universe
+      tags:
+      - admin
+      x-openapi-router-controller: openapi_server.controllers.admin_controller
+  /query/byBadgeIds:
+    get:
+      operationId: query_by_badge_ids_get
+      parameters:
+      - description: The CSV of badge ids
+        explode: true
+        in: query
+        name: badgeIds
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_query_byBadgeIds_get_200_response'
+          description: OK
+      summary: Look up creation dates and values of badge ids
+      tags:
+      - query
+      x-openapi-router-controller: openapi_server.controllers.query_controller
+    post:
+      operationId: query_by_badge_ids_post
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              example: "2124469124"
+              type: string
+        description: The CSV of badge ids
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_query_byBadgeIds_get_200_response'
+          description: OK
+      summary: Look up creation dates and values of badge ids
+      tags:
+      - query
+      x-openapi-router-controller: openapi_server.controllers.query_controller
+  /query/byUniverseIds:
+    get:
+      operationId: query_by_universe_ids_get
+      parameters:
+      - description: The CSV of universe ids
+        explode: true
+        in: query
+        name: universeIds
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_query_byUniverseIds_get_200_response'
+          description: OK
+      summary: Look up creation dates and values of all badges under universes
+      tags:
+      - query
+      x-openapi-router-controller: openapi_server.controllers.query_controller
+    post:
+      operationId: query_by_universe_ids_post
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              example: "1159511221"
+              type: string
+        description: The CSV of universe ids
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_query_byUniverseIds_get_200_response'
+          description: OK
+      summary: Look up creation dates and values of all badges under universes
+      tags:
+      - query
+      x-openapi-router-controller: openapi_server.controllers.query_controller
+  /user/dumpDB:
+    get:
+      operationId: user_dump_dbget
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: OK
+      summary: Get a dump of the entire database. Updates every five minutes
+      tags:
+      - user
+      x-openapi-router-controller: openapi_server.controllers.user_controller
+  /user/requestCheck:
+    get:
+      operationId: user_request_check_get
+      parameters:
+      - description: The universe id to check
+        explode: true
+        in: query
+        name: universeId
+        required: true
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_user_requestCheck_get_200_response'
+          description: OK
+      summary: Request a check/recheck of an universe. Gets ignored if the universe
+        was last checked <5 mins ago
+      tags:
+      - user
+      x-openapi-router-controller: openapi_server.controllers.user_controller
+components:
+  schemas:
+    BadgeInfo:
+      example:
+        awardingUniverse: 1159511221
+        found: true
+        badgeId: 2124469124
+        created: 1558655968690
+        value: Legacy
+      properties:
+        badgeId:
+          example: 2124469124
+          title: badgeId
+          type: integer
+        found:
+          example: true
+          title: found
+          type: boolean
+        created:
+          example: 1558655968690
+          title: created
+          type: integer
+        awardingUniverse:
+          example: 1159511221
+          title: awardingUniverse
+          type: integer
+        value:
+          enum:
+          - Free
+          - Valuable
+          - Legacy
+          example: Legacy
+          title: value
+          type: string
+      title: BadgeInfo
+      type: object
+    UniverseInfo:
+      example:
+        badges:
+        - awardingUniverse: 1159511221
+          found: true
+          badgeId: 2124469124
+          created: 1558655968690
+          value: Legacy
+        - awardingUniverse: 1159511221
+          found: true
+          badgeId: 2124469124
+          created: 1558655968690
+          value: Legacy
+        found: true
+        universeId: 1159511221
+        name: "[30,000 Badges] Manner's Badge Walk"
+        badgeCount: 30000
+        lastChecked: 1683424605340
+      properties:
+        universeId:
+          example: 1159511221
+          title: universeId
+          type: integer
+        found:
+          example: true
+          title: found
+          type: boolean
+        lastChecked:
+          example: 1683424605340
+          title: lastChecked
+          type: integer
+        name:
+          example: "[30,000 Badges] Manner's Badge Walk"
+          title: name
+          type: string
+        badgeCount:
+          example: 30000
+          title: badgeCount
+          type: integer
+        badges:
+          items:
+            $ref: '#/components/schemas/BadgeInfo'
+          title: badges
+          type: array
+      title: UniverseInfo
+      type: object
+    Database:
+      example:
+        universes:
+        - badges:
+          - awardingUniverse: 1159511221
+            found: true
+            badgeId: 2124469124
+            created: 1558655968690
+            value: Legacy
+          - awardingUniverse: 1159511221
+            found: true
+            badgeId: 2124469124
+            created: 1558655968690
+            value: Legacy
+          found: true
+          universeId: 1159511221
+          name: "[30,000 Badges] Manner's Badge Walk"
+          badgeCount: 30000
+          lastChecked: 1683424605340
+        - badges:
+          - awardingUniverse: 1159511221
+            found: true
+            badgeId: 2124469124
+            created: 1558655968690
+            value: Legacy
+          - awardingUniverse: 1159511221
+            found: true
+            badgeId: 2124469124
+            created: 1558655968690
+            value: Legacy
+          found: true
+          universeId: 1159511221
+          name: "[30,000 Badges] Manner's Badge Walk"
+          badgeCount: 30000
+          lastChecked: 1683424605340
+      properties:
+        universes:
+          items:
+            $ref: '#/components/schemas/UniverseInfo'
+          title: universes
+          type: array
+      title: Database
+      type: object
+    _query_byBadgeIds_get_200_response:
+      example:
+        data:
+        - awardingUniverse: 1159511221
+          found: true
+          badgeId: 2124469124
+          created: 1558655968690
+          value: Legacy
+        - awardingUniverse: 1159511221
+          found: true
+          badgeId: 2124469124
+          created: 1558655968690
+          value: Legacy
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BadgeInfo'
+          title: data
+          type: array
+      title: _query_byBadgeIds_get_200_response
+      type: object
+    _query_byUniverseIds_get_200_response:
+      example:
+        data:
+        - badges:
+          - awardingUniverse: 1159511221
+            found: true
+            badgeId: 2124469124
+            created: 1558655968690
+            value: Legacy
+          - awardingUniverse: 1159511221
+            found: true
+            badgeId: 2124469124
+            created: 1558655968690
+            value: Legacy
+          found: true
+          universeId: 1159511221
+          name: "[30,000 Badges] Manner's Badge Walk"
+          badgeCount: 30000
+          lastChecked: 1683424605340
+        - badges:
+          - awardingUniverse: 1159511221
+            found: true
+            badgeId: 2124469124
+            created: 1558655968690
+            value: Legacy
+          - awardingUniverse: 1159511221
+            found: true
+            badgeId: 2124469124
+            created: 1558655968690
+            value: Legacy
+          found: true
+          universeId: 1159511221
+          name: "[30,000 Badges] Manner's Badge Walk"
+          badgeCount: 30000
+          lastChecked: 1683424605340
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/UniverseInfo'
+          title: data
+          type: array
+      title: _query_byUniverseIds_get_200_response
+      type: object
+    _user_requestCheck_get_200_response:
+      example:
+        lastChecked: 1683424605340
+        checkInProgress: true
+      properties:
+        lastChecked:
+          example: 1683424605340
+          title: lastChecked
+          type: integer
+        checkInProgress:
+          example: true
+          title: checkInProgress
+          type: boolean
+      title: _user_requestCheck_get_200_response
+      type: object
+    _admin_purgeBadgeInfos_get_200_response:
+      example:
+        badgesAffected: 0
+      properties:
+        badgesAffected:
+          example: 0
+          title: badgesAffected
+          type: integer
+      title: _admin_purgeBadgeInfos_get_200_response
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: api_key
+      type: apiKey
+      x-apikeyInfoFunc: openapi_server.controllers.security_controller_.info_from_ApiKeyAuth

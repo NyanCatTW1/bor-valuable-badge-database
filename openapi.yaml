@@ -1,0 +1,374 @@
+openapi: 3.0.3
+info:
+  title: BoR Valuable Badge Database
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: https://example.com/api/v3
+tags:
+  - name: query
+    description: Database lookup
+  - name: user
+    description: Database management available to all users
+  - name: admin
+    description: Database management available to admins
+paths:
+  /query/byBadgeIds:
+    get:
+      tags:
+        - query
+      summary: Look up creation dates and values of badge ids
+      parameters:
+        - in: query
+          name: badgeIds
+          schema:
+            type: array
+            items:
+              type: integer
+          required: true
+          description: The CSV of badge ids
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BadgeInfo'
+    post:
+      tags:
+        - query
+      summary: Look up creation dates and values of badge ids
+      requestBody:
+        description: The CSV of badge ids
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 2124469124
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BadgeInfo'
+  /query/byUniverseIds:
+    get:
+      tags:
+        - query
+      summary: Look up creation dates and values of all badges under universes
+      parameters:
+        - in: query
+          name: universeIds
+          schema:
+            type: array
+            items:
+              type: integer
+          required: true
+          description: The CSV of universe ids
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UniverseInfo'
+    post:
+      tags:
+        - query
+      summary: Look up creation dates and values of all badges under universes
+      requestBody:
+        description: The CSV of universe ids
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 1159511221
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UniverseInfo'
+  /user/requestCheck:
+    get:
+      tags:
+      - user
+      summary: Request a check/recheck of an universe. Gets ignored if the universe was last checked <5 mins ago
+      parameters:
+        - in: query
+          name: universeId
+          schema:
+            type: integer
+          required: true
+          description: The universe id to check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lastChecked:
+                    type: integer
+                    example: 1683424605340
+                  checkInProgress:
+                    type: boolean
+                    example: true
+  /user/dumpDB:
+    get:
+      tags:
+      - user
+      summary: Get a dump of the entire database. Updates every five minutes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+  /admin/startCheck:
+    get:
+      tags:
+      - admin
+      security:
+        - ApiKeyAuth: []
+      summary: Start a check/recheck of an universe
+      parameters:
+        - in: query
+          name: universeId
+          schema:
+            type: integer
+          required: true
+          description: The universe id to check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lastChecked:
+                    type: integer
+                    example: 1683424605340
+                  checkInProgress:
+                    type: boolean
+                    example: true
+  /admin/dumpDB:
+    get:
+      tags:
+      - admin
+      security:
+        - ApiKeyAuth: []
+      summary: Get a dump of the entire database right now
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+  /admin/purgeBadgeInfos:
+    get:
+      tags:
+      - admin
+      security:
+        - ApiKeyAuth: []
+      summary: Purge cached info of badges
+      parameters:
+        - in: query
+          name: badgeIds
+          schema:
+            type: array
+            items:
+              type: integer
+          required: true
+          description: The CSV of badge ids
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  badgesAffected:
+                    type: integer
+                    example: 0
+    post:
+      tags:
+      - admin
+      security:
+        - ApiKeyAuth: []
+      summary: Purge cached info of badges
+      requestBody:
+        description: The CSV of badge ids
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 2124469124
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  badgesAffected:
+                    type: integer
+                    example: 0
+  /admin/purgeUniverseInfos:
+    get:
+      tags:
+      - admin
+      security:
+        - ApiKeyAuth: []
+      summary: Purge cached info of universes and all associated badges
+      parameters:
+        - in: query
+          name: universeIds
+          schema:
+            type: array
+            items:
+              type: integer
+          required: true
+          description: The CSV of universe ids
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  badgesAffected:
+                    type: integer
+                    example: 0
+    post:
+      tags:
+      - admin
+      security:
+        - ApiKeyAuth: []
+      summary: Purge cached info of universes and all associated badges
+      requestBody:
+        description: The CSV of universe ids
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 1159511221
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  badgesAffected:
+                    type: integer
+                    example: 0
+  /admin/refreshValue:
+    get:
+      tags:
+      - admin
+      security:
+        - ApiKeyAuth: []
+      summary: Redetermine values of all badges in the database
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  badgesAffected:
+                    type: integer
+                    example: 0
+components:
+  schemas:
+    BadgeInfo:
+      type: object
+      properties:
+        badgeId:
+          type: integer
+          example: 2124469124
+        found:
+          type: boolean
+          example: true
+        created:
+          type: integer
+          example: 1558655968690
+        awardingUniverse:
+          type: integer
+          example: 1159511221
+        value:
+          type: string
+          enum: ["Free", "Valuable", "Legacy"]
+          example: "Legacy"
+    UniverseInfo:
+      type: object
+      properties:
+        universeId:
+          type: integer
+          example: 1159511221
+        found:
+          type: boolean
+          example: true
+        lastChecked:
+          type: integer
+          example: 1683424605340
+        name:
+          type: string
+          example: "[30,000 Badges] Manner's Badge Walk"
+        badgeCount:
+          type: integer
+          example: 30000
+        badges:
+          type: array
+          items:
+            $ref: '#/components/schemas/BadgeInfo'
+    Database:
+      type: object
+      properties:
+        universes:
+          type: array
+          items:
+            $ref: '#/components/schemas/UniverseInfo'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: api_key
+      in: header
