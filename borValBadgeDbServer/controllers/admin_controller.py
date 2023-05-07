@@ -18,7 +18,7 @@ def admin_dump_dbget():  # noqa: E501
     """
 
     dbLock.acquire()
-    setCachedBadgeDB(json.dumps(badgeDB.to_dict(), sort_keys=True, indent=2) + "\n")
+    setCachedBadgeDB(json.dumps(badgeDB.to_dict()) + "\n")
 
     ret = connexion.lifecycle.ConnexionResponse(
         status_code=200,
