@@ -195,6 +195,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Database'
+  /admin/saveDB:
+    get:
+      tags:
+      - admin
+      security:
+        - ApiKeyAuth: []
+      summary: Save the database right now
+      responses:
+        '200':
+          description: OK
   /admin/purgeBadgeInfos:
     get:
       tags:

@@ -1,12 +1,12 @@
 {
   "universes": {
-    "1": {
+    "2": {
       "badge_count": 0,
       "badges": {},
       "found": true,
-      "last_checked": 0,
-      "name": "",
-      "universe_id": 1
+      "last_checked": 1683409702004,
+      "name": "Unknown",
+      "universe_id": 2
     }
   }
 }

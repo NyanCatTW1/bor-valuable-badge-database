@@ -10,7 +10,7 @@ from borValBadgeDbServer.models.admin_purge_badge_infos_get200_response import A
 from borValBadgeDbServer.models.database import Database  # noqa: E501
 from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
 from borValBadgeDbServer import util
-from borValBadgeDbServer.db.db import dbLock, cachedBadgeDB, badgeDB
+from borValBadgeDbServer.db.db import dbLock, getCachedBadgeDB, setCachedBadgeDB, badgeDB, saveDatabase
 from borValBadgeDbServer.db.checker import checkInProgress, startCheck
 
 
@@ -24,14 +24,13 @@ def admin_dump_dbget():  # noqa: E501
     """
 
     dbLock.acquire()
-    global cachedBadgeDB
-    cachedBadgeDB = json.dumps(badgeDB.to_dict(), sort_keys=True, indent=2) + "\n"
+    setCachedBadgeDB(json.dumps(badgeDB.to_dict(), sort_keys=True, indent=2) + "\n")
 
     ret = connexion.lifecycle.ConnexionResponse(
         status_code=200,
         content_type="application/json",
         mimetype="text/plain",
-        body=cachedBadgeDB
+        body=getCachedBadgeDB()
     )
     dbLock.release()
     return ret
@@ -98,6 +97,18 @@ def admin_refresh_value_get():  # noqa: E501
     :rtype: Union[AdminPurgeBadgeInfosGet200Response, Tuple[AdminPurgeBadgeInfosGet200Response, int], Tuple[AdminPurgeBadgeInfosGet200Response, int, Dict[str, str]]
     """
     return 'do some magic!'
+
+
+def admin_save_dbget():  # noqa: E501
+    """Save the database right now
+
+     # noqa: E501
+
+
+    :rtype: Union[None, Tuple[None, int], Tuple[None, int, Dict[str, str]]
+    """
+
+    saveDatabase()
 
 
 def admin_start_check_get(universe_id):  # noqa: E501

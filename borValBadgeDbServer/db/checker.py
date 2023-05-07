@@ -17,7 +17,7 @@ def checkInProgress(universeId):
 
 def checkWorker(universeId):
     dbLock.acquire()
-    universe = badgeDB.universes.get(universeId, UniverseInfo(universeId))
+    universe = badgeDB.universes.get(universeId, UniverseInfo(int(universeId)))
     dbLock.release()
 
     universe.last_checked = util.getTimestamp()

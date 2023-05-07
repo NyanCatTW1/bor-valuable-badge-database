@@ -147,6 +147,18 @@ paths:
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
+  /admin/saveDB:
+    get:
+      operationId: admin_save_dbget
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Save the database right now
+      tags:
+      - admin
+      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
   /admin/startCheck:
     get:
       operationId: admin_start_check_get

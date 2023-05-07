@@ -18,6 +18,15 @@ badgeDB: Database = None
 cachedBadgeDB = None
 
 
+def getCachedBadgeDB():
+    return cachedBadgeDB
+
+
+def setCachedBadgeDB(newDB):
+    global cachedBadgeDB
+    cachedBadgeDB = newDB
+
+
 def loadDatabase():
     dbLock.acquire()
     global dbPath
@@ -51,11 +60,10 @@ def loadDatabase():
 def saveDatabase():
     dbLock.acquire()
     try:
-        global cachedBadgeDB
-        cachedBadgeDB = json.dumps(badgeDB.to_dict(), sort_keys=True, indent=2) + "\n"
+        setCachedBadgeDB(json.dumps(badgeDB.to_dict(), sort_keys=True, indent=2) + "\n")
 
         with open(dbPath, "w") as f:
-            f.write(cachedBadgeDB)
+            f.write(getCachedBadgeDB())
     except Exception:
         traceback.print_exc()
         print("Failed to save database!")
