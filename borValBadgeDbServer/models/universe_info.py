@@ -17,7 +17,7 @@ class UniverseInfo(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, universe_id=None, found=None, last_checked=None, name=None, badge_count=None, badges=None):  # noqa: E501
+    def __init__(self, universe_id=0, found=True, last_checked=0, name="Unknown", badge_count=0, badges=None):  # noqa: E501
         """UniverseInfo - a model defined in OpenAPI
 
         :param universe_id: The universe_id of this UniverseInfo.  # noqa: E501
@@ -31,23 +31,26 @@ class UniverseInfo(Model):
         :param badge_count: The badge_count of this UniverseInfo.  # noqa: E501
         :type badge_count: int
         :param badges: The badges of this UniverseInfo.  # noqa: E501
-        :type badges: List[BadgeInfo]
+        :type badges: Dict[str, BadgeInfo]
         """
+        if badges is None:
+            badges = {}
+
         self.openapi_types = {
             'universe_id': int,
             'found': bool,
             'last_checked': int,
             'name': str,
             'badge_count': int,
-            'badges': List[BadgeInfo]
+            'badges': Dict[str, BadgeInfo]
         }
 
         self.attribute_map = {
-            'universe_id': 'universeId',
+            'universe_id': 'universe_id',
             'found': 'found',
-            'last_checked': 'lastChecked',
+            'last_checked': 'last_checked',
             'name': 'name',
-            'badge_count': 'badgeCount',
+            'badge_count': 'badge_count',
             'badges': 'badges'
         }
 
@@ -180,7 +183,7 @@ class UniverseInfo(Model):
 
 
         :return: The badges of this UniverseInfo.
-        :rtype: List[BadgeInfo]
+        :rtype: Dict[str, BadgeInfo]
         """
         return self._badges
 
@@ -190,7 +193,7 @@ class UniverseInfo(Model):
 
 
         :param badges: The badges of this UniverseInfo.
-        :type badges: List[BadgeInfo]
+        :type badges: Dict[str, BadgeInfo]
         """
 
         self._badges = badges

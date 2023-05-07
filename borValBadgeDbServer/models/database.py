@@ -21,10 +21,10 @@ class Database(Model):
         """Database - a model defined in OpenAPI
 
         :param universes: The universes of this Database.  # noqa: E501
-        :type universes: List[UniverseInfo]
+        :type universes: Dict[str, UniverseInfo]
         """
         self.openapi_types = {
-            'universes': List[UniverseInfo]
+            'universes': Dict[str, UniverseInfo]
         }
 
         self.attribute_map = {
@@ -50,7 +50,7 @@ class Database(Model):
 
 
         :return: The universes of this Database.
-        :rtype: List[UniverseInfo]
+        :rtype: Dict[str, UniverseInfo]
         """
         return self._universes
 
@@ -60,7 +60,7 @@ class Database(Model):
 
 
         :param universes: The universes of this Database.
-        :type universes: List[UniverseInfo]
+        :type universes: Dict[str, UniverseInfo]
         """
 
         self._universes = universes

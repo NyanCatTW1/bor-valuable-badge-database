@@ -306,15 +306,15 @@ components:
   schemas:
     BadgeInfo:
       example:
-        awardingUniverse: 1159511221
         found: true
-        badgeId: 2124469124
         created: 1558655968690
+        badge_id: 2124469124
+        awarding_universe: 1159511221
         value: Legacy
       properties:
-        badgeId:
+        badge_id:
           example: 2124469124
-          title: badgeId
+          title: badge_id
           type: integer
         found:
           example: true
@@ -324,9 +324,9 @@ components:
           example: 1558655968690
           title: created
           type: integer
-        awardingUniverse:
+        awarding_universe:
           example: 1159511221
-          title: awardingUniverse
+          title: awarding_universe
           type: integer
         value:
           enum:
@@ -341,104 +341,102 @@ components:
     UniverseInfo:
       example:
         badges:
-        - awardingUniverse: 1159511221
-          found: true
-          badgeId: 2124469124
-          created: 1558655968690
-          value: Legacy
-        - awardingUniverse: 1159511221
-          found: true
-          badgeId: 2124469124
-          created: 1558655968690
-          value: Legacy
+          "2124469124":
+            badge_id: 2124469124
+            found: true
+            created: 1558655968690
+            awarding_universe: 1159511221
+            value: Legacy
         found: true
-        universeId: 1159511221
+        last_checked: 1683424605340
+        universe_id: 1159511221
         name: "[30,000 Badges] Manner's Badge Walk"
-        badgeCount: 30000
-        lastChecked: 1683424605340
+        badge_count: 30000
       properties:
-        universeId:
+        universe_id:
           example: 1159511221
-          title: universeId
+          title: universe_id
           type: integer
         found:
           example: true
           title: found
           type: boolean
-        lastChecked:
+        last_checked:
           example: 1683424605340
-          title: lastChecked
+          title: last_checked
           type: integer
         name:
           example: "[30,000 Badges] Manner's Badge Walk"
           title: name
           type: string
-        badgeCount:
+        badge_count:
           example: 30000
-          title: badgeCount
+          title: badge_count
           type: integer
         badges:
-          items:
+          additionalProperties:
             $ref: '#/components/schemas/BadgeInfo'
+          example:
+            "2124469124":
+              badge_id: 2124469124
+              found: true
+              created: 1558655968690
+              awarding_universe: 1159511221
+              value: Legacy
           title: badges
-          type: array
+          type: object
       title: UniverseInfo
       type: object
     Database:
       example:
         universes:
-        - badges:
-          - awardingUniverse: 1159511221
+          "1159511221":
+            universe_id: 1159511221
             found: true
-            badgeId: 2124469124
-            created: 1558655968690
-            value: Legacy
-          - awardingUniverse: 1159511221
-            found: true
-            badgeId: 2124469124
-            created: 1558655968690
-            value: Legacy
-          found: true
-          universeId: 1159511221
-          name: "[30,000 Badges] Manner's Badge Walk"
-          badgeCount: 30000
-          lastChecked: 1683424605340
-        - badges:
-          - awardingUniverse: 1159511221
-            found: true
-            badgeId: 2124469124
-            created: 1558655968690
-            value: Legacy
-          - awardingUniverse: 1159511221
-            found: true
-            badgeId: 2124469124
-            created: 1558655968690
-            value: Legacy
-          found: true
-          universeId: 1159511221
-          name: "[30,000 Badges] Manner's Badge Walk"
-          badgeCount: 30000
-          lastChecked: 1683424605340
+            last_checked: 1683424605340
+            name: "[30,000 Badges] Manner's Badge Walk"
+            badge_count: 30000
+            badges:
+              "2124469124":
+                badge_id: 2124469124
+                found: true
+                created: 1558655968690
+                awarding_universe: 1159511221
+                value: Legacy
       properties:
         universes:
-          items:
+          additionalProperties:
             $ref: '#/components/schemas/UniverseInfo'
+          example:
+            "1159511221":
+              universe_id: 1159511221
+              found: true
+              last_checked: 1683424605340
+              name: "[30,000 Badges] Manner's Badge Walk"
+              badge_count: 30000
+              badges:
+                "2124469124":
+                  badge_id: 2124469124
+                  found: true
+                  created: 1558655968690
+                  awarding_universe: 1159511221
+                  value: Legacy
           title: universes
-          type: array
+          type: object
       title: Database
       type: object
     _query_byBadgeIds_get_200_response:
       example:
         data:
-        - awardingUniverse: 1159511221
-          found: true
-          badgeId: 2124469124
+        - found: true
           created: 1558655968690
+          badge_id: 2124469124
+          awarding_universe: 1159511221
           value: Legacy
-        - awardingUniverse: 1159511221
-          found: true
-          badgeId: 2124469124
+        - found: true
           created: 1558655968690
+          badge_id: 2124469124
+          awarding_universe: 1159511221
           value: Legacy
       properties:
         data:
@@ -452,37 +450,29 @@ components:
       example:
         data:
         - badges:
-          - awardingUniverse: 1159511221
-            found: true
-            badgeId: 2124469124
-            created: 1558655968690
-            value: Legacy
-          - awardingUniverse: 1159511221
-            found: true
-            badgeId: 2124469124
-            created: 1558655968690
-            value: Legacy
+            "2124469124":
+              badge_id: 2124469124
+              found: true
+              created: 1558655968690
+              awarding_universe: 1159511221
+              value: Legacy
           found: true
-          universeId: 1159511221
+          last_checked: 1683424605340
+          universe_id: 1159511221
           name: "[30,000 Badges] Manner's Badge Walk"
-          badgeCount: 30000
-          lastChecked: 1683424605340
+          badge_count: 30000
         - badges:
-          - awardingUniverse: 1159511221
-            found: true
-            badgeId: 2124469124
-            created: 1558655968690
-            value: Legacy
-          - awardingUniverse: 1159511221
-            found: true
-            badgeId: 2124469124
-            created: 1558655968690
-            value: Legacy
+            "2124469124":
+              badge_id: 2124469124
+              found: true
+              created: 1558655968690
+              awarding_universe: 1159511221
+              value: Legacy
           found: true
-          universeId: 1159511221
+          last_checked: 1683424605340
+          universe_id: 1159511221
           name: "[30,000 Badges] Manner's Badge Walk"
-          badgeCount: 30000
-          lastChecked: 1683424605340
+          badge_count: 30000
       properties:
         data:
           items:

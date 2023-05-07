@@ -11,6 +11,7 @@ from borValBadgeDbServer.models.database import Database  # noqa: E501
 from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
 from borValBadgeDbServer import util
 from borValBadgeDbServer.db.db import dbLock, cachedBadgeDB, badgeDB
+from borValBadgeDbServer.db.checker import checkInProgress, startCheck
 
 
 def admin_dump_dbget():  # noqa: E501
@@ -109,4 +110,13 @@ def admin_start_check_get(universe_id):  # noqa: E501
 
     :rtype: Union[UserRequestCheckGet200Response, Tuple[UserRequestCheckGet200Response, int], Tuple[UserRequestCheckGet200Response, int, Dict[str, str]]
     """
-    return 'do some magic!'
+
+    universe_id = str(universe_id)
+    dbLock.acquire()
+    lastChecked = 0
+    if universe_id in badgeDB.universes:
+        lastChecked = badgeDB.universes[universe_id].last_checked
+    dbLock.release()
+
+    startCheck(universe_id)
+    return UserRequestCheckGet200Response(lastChecked, checkInProgress(universe_id))

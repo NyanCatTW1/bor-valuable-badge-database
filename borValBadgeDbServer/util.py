@@ -146,3 +146,8 @@ def _deserialize_dict(data, boxed_type):
     """
     return {k: _deserialize(v, boxed_type)
             for k, v in six.iteritems(data)}
+
+
+def getTimestamp():
+    # https://stackoverflow.com/a/60380427
+    return int(datetime.datetime.utcnow().timestamp() * 1e3)

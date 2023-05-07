@@ -2,10 +2,11 @@ import os
 import sys
 import json
 import traceback
-from datetime import datetime
 from threading import Lock
+import shutil
 
 from borValBadgeDbServer.models.database import Database
+from borValBadgeDbServer.util import getTimestamp
 
 from apscheduler.schedulers.sync import Scheduler
 from apscheduler.triggers.interval import IntervalTrigger
@@ -13,7 +14,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 dbScheduler = Scheduler()
 dbPath = None
 dbLock = Lock()
-badgeDB = None
+badgeDB: Database = None
 cachedBadgeDB = None
 
 
@@ -29,19 +30,18 @@ def loadDatabase():
     try:
         badgeDB = Database.from_dict(json.load(open(dbPath)))
         totalBadgeCount = 0
-        for universe in badgeDB.universes:
+        for universe in badgeDB.universes.values():
             totalBadgeCount += universe.badge_count
         print(f"Loaded {dbPath} with {len(badgeDB.universes)} universes and {totalBadgeCount} badges")
     except Exception:
         traceback.print_exc()
         print(f"Failed to load {dbPath}! Using default")
-        badgeDB = Database.from_dict({"universes": []})
+        badgeDB = Database.from_dict({"universes": {}})
 
         if os.path.isfile(dbPath):
-            # https://stackoverflow.com/a/60380427
-            bakPath = dbPath + f"-{int(datetime.utcnow().timestamp() * 1e3)}.bak"
-            os.rename(dbPath, bakPath)
-            print(f"Moved {dbPath} to {bakPath}")
+            bakPath = dbPath + f"-{getTimestamp()}.bak"
+            shutil.copy2(dbPath, bakPath)
+            print(f"Copied {dbPath} to {bakPath}")
     dbLock.release()
 
     dbScheduler.add_schedule(saveDatabase, IntervalTrigger(minutes=5))

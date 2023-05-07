@@ -322,7 +322,7 @@ components:
     BadgeInfo:
       type: object
       properties:
-        badgeId:
+        badge_id:
           type: integer
           example: 2124469124
         found:
@@ -331,7 +331,7 @@ components:
         created:
           type: integer
           example: 1558655968690
-        awardingUniverse:
+        awarding_universe:
           type: integer
           example: 1159511221
         value:
@@ -341,32 +341,53 @@ components:
     UniverseInfo:
       type: object
       properties:
-        universeId:
+        universe_id:
           type: integer
           example: 1159511221
         found:
           type: boolean
           example: true
-        lastChecked:
+        last_checked:
           type: integer
           example: 1683424605340
         name:
           type: string
           example: "[30,000 Badges] Manner's Badge Walk"
-        badgeCount:
+        badge_count:
           type: integer
           example: 30000
         badges:
-          type: array
-          items:
+          type: object
+          additionalProperties:
             $ref: '#/components/schemas/BadgeInfo'
+          example:
+            2124469124:
+              badge_id: 2124469124
+              found: true
+              created: 1558655968690
+              awarding_universe: 1159511221
+              value: "Legacy"
     Database:
       type: object
       properties:
         universes:
-          type: array
-          items:
+          type: object
+          additionalProperties:
             $ref: '#/components/schemas/UniverseInfo'
+          example:
+            1159511221:
+              universe_id: 1159511221
+              found: true
+              last_checked: 1683424605340
+              name: "[30,000 Badges] Manner's Badge Walk"
+              badge_count: 30000
+              badges:
+                2124469124:
+                  badge_id: 2124469124
+                  found: true
+                  created: 1558655968690
+                  awarding_universe: 1159511221
+                  value: "Legacy"
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -38,10 +38,10 @@ class BadgeInfo(Model):
         }
 
         self.attribute_map = {
-            'badge_id': 'badgeId',
+            'badge_id': 'badge_id',
             'found': 'found',
             'created': 'created',
-            'awarding_universe': 'awardingUniverse',
+            'awarding_universe': 'awarding_universe',
             'value': 'value'
         }
 
