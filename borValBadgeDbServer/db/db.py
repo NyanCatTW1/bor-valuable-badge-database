@@ -9,11 +9,7 @@ import time
 
 from borValBadgeDbServer.models.database import Database
 from borValBadgeDbServer.util import getTimestamp
-from borValBadgeDbServer.models.badge_info import BadgeInfo
 
-from apscheduler.schedulers.sync import Scheduler
-
-dbScheduler = Scheduler()
 dbPath = None
 dbLock = Lock()
 badgeDB: Database = None

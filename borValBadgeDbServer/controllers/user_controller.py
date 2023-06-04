@@ -7,24 +7,6 @@ from borValBadgeDbServer.db.db import getCachedBadgeDB, getBadgeDB, getBadgeIdCa
 from borValBadgeDbServer.db.checker import check_in_progress, startCheck, reportMissing
 
 
-def user_dump_dbget():  # noqa: E501
-    """Get a dump of the entire database. Updates every hour
-
-     # noqa: E501
-
-
-    :rtype: Union[Database, Tuple[Database, int], Tuple[Database, int, Dict[str, str]]
-    """
-
-    ret = connexion.lifecycle.ConnexionResponse(
-        status_code=200,
-        content_type="application/json",
-        mimetype="text/plain",
-        body=getCachedBadgeDB()
-    )
-    return ret
-
-
 def user_report_missing_get(badge_ids):  # noqa: E501
     """Run checks based on missing/unknown badge ids
 

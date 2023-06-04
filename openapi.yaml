@@ -189,18 +189,6 @@ paths:
                   added_to_queue:
                     type: integer
                     example: 0
-  /user/dumpDB:
-    get:
-      tags:
-      - user
-      summary: Get a dump of the entire database. Updates every hour
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Database'
   /admin/startCheck:
     get:
       tags:

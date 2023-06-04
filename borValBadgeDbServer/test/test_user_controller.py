@@ -14,21 +14,6 @@ from borValBadgeDbServer.test import BaseTestCase
 class TestUserController(BaseTestCase):
     """UserController integration test stubs"""
 
-    def test_user_dump_dbget(self):
-        """Test case for user_dump_dbget
-
-        Get a dump of the entire database. Updates every hour
-        """
-        headers = { 
-            'Accept': 'application/json',
-        }
-        response = self.client.open(
-            '/api/v3/user/dumpDB',
-            method='GET',
-            headers=headers)
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
-
     def test_user_request_check_get(self):
         """Test case for user_request_check_get
 

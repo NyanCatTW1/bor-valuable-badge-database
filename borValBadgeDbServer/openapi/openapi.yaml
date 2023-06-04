@@ -276,20 +276,6 @@ paths:
       tags:
       - query
       x-openapi-router-controller: borValBadgeDbServer.controllers.query_controller
-  /user/dumpDB:
-    get:
-      operationId: user_dump_dbget
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Database'
-          description: OK
-      summary: Get a dump of the entire database. Updates every hour
-      tags:
-      - user
-      x-openapi-router-controller: borValBadgeDbServer.controllers.user_controller
   /user/reportMissing:
     get:
       operationId: user_report_missing_get
