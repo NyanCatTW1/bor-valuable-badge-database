@@ -26,10 +26,6 @@ class QueryByBadgeIdsGet200Response(Model):
             'data': List[BadgeInfo]
         }
 
-        self.attribute_map = {
-            'data': 'data'
-        }
-
         self._data = data
 
     @classmethod

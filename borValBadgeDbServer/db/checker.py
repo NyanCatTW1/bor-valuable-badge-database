@@ -14,7 +14,7 @@ checksInProgress = set()
 missingReports = set()
 
 
-def checkInProgress(universeId):
+def check_in_progress(universeId):
     checkLock.acquire()
     ret = universeId in checksInProgress
     checkLock.release()
@@ -75,7 +75,7 @@ def refreshUniverse(universeId):
     for day in days.values():
         valuableBadges.update(sorted(day)[5:])
 
-    badgesAffected = set()
+    badges_affected = set()
     badgeIds = list(map(str, sorted(map(int, getBadgeDB().universes[universeId].badges.keys()))))
     badgesToCompact = set(badgeIds)
     for i in range(len(badgeIds)):
@@ -94,19 +94,19 @@ def refreshUniverse(universeId):
             newValue = "Free"
 
         if oldValue != newValue:
-            badgesAffected.add(badgeId)
+            badges_affected.add(badgeId)
         getBadgeDB().universes[universeId].badges[badgeId].value = newValue
 
     for badgeId in badgesToCompact:
-        badgesAffected.add(badgeId)
+        badges_affected.add(badgeId)
         assert getBadgeDB().universes[universeId].badges[badgeId].value == "Free"
         del getBadgeDB().universes[universeId].badges[badgeId]
         getBadgeDB().universes[universeId].free_badges.append(badgeId)
-    return len(badgesAffected)
+    return len(badges_affected)
 
 
 def startCheck(universeId):
-    if checkInProgress(universeId):
+    if check_in_progress(universeId):
         return
 
     checkLock.acquire()

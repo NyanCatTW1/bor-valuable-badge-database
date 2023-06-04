@@ -28,11 +28,6 @@ class UserRequestCheckGet200Response(Model):
             'check_in_progress': bool
         }
 
-        self.attribute_map = {
-            'last_checked': 'lastChecked',
-            'check_in_progress': 'checkInProgress'
-        }
-
         self._last_checked = last_checked
         self._check_in_progress = check_in_progress
 

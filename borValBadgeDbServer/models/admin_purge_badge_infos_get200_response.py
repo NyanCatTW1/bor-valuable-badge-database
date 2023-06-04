@@ -25,10 +25,6 @@ class AdminPurgeBadgeInfosGet200Response(Model):
             'badges_affected': int
         }
 
-        self.attribute_map = {
-            'badges_affected': 'badgesAffected'
-        }
-
         self._badges_affected = badges_affected
 
     @classmethod

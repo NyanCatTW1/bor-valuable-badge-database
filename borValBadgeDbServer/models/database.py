@@ -26,10 +26,6 @@ class Database(Model):
             'universes': Dict[str, UniverseInfo]
         }
 
-        self.attribute_map = {
-            'universes': 'universes'
-        }
-
         self._universes = universes
 
     @classmethod

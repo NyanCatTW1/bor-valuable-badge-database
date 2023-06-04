@@ -25,10 +25,6 @@ class UserReportMissingGet200Response(Model):
             'added_to_queue': int
         }
 
-        self.attribute_map = {
-            'added_to_queue': 'addedToQueue'
-        }
-
         self._added_to_queue = added_to_queue
 
     @classmethod

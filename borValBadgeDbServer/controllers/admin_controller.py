@@ -5,7 +5,7 @@ import json
 from borValBadgeDbServer.models.admin_purge_badge_infos_get200_response import AdminPurgeBadgeInfosGet200Response  # noqa: E501
 from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
 from borValBadgeDbServer.db.db import dbLock, getCachedBadgeDB, setCachedBadgeDB, getBadgeDB, saveDatabase, getBadgeIdCache, updateBadgeIdCache
-from borValBadgeDbServer.db.checker import checkInProgress, startCheck, refreshUniverse
+from borValBadgeDbServer.db.checker import check_in_progress, startCheck, refreshUniverse
 
 
 def admin_dump_dbget():  # noqa: E501
@@ -44,10 +44,10 @@ def admin_purge_badge_infos_get(badge_ids):  # noqa: E501
     badge_ids = {str(x) for x in badge_ids}
 
     dbLock.acquire()
-    badgesAffected = 0
+    badges_affected = 0
     for universeId in getBadgeDB().universes.keys():
         idsToRemove = badge_ids & getBadgeIdCache(universeId)
-        badgesAffected += len(idsToRemove)
+        badges_affected += len(idsToRemove)
         for badgeId in idsToRemove:
             if badgeId in getBadgeDB().universes[universeId]:
                 del getBadgeDB().universes[universeId].badges[badgeId]
@@ -56,7 +56,7 @@ def admin_purge_badge_infos_get(badge_ids):  # noqa: E501
         getBadgeDB().universes[universeId].badge_count = len(getBadgeDB().universes[universeId].badges)
         updateBadgeIdCache(universeId)
     dbLock.release()
-    return AdminPurgeBadgeInfosGet200Response(badgesAffected)
+    return AdminPurgeBadgeInfosGet200Response(badges_affected)
 
 
 def admin_purge_badge_infos_post(body):  # noqa: E501
@@ -88,12 +88,12 @@ def admin_purge_universe_infos_get(universe_ids):  # noqa: E501
 
     dbLock.acquire()
     idsToRemove = universe_ids & set(getBadgeDB().universes.keys())
-    badgesAffected = 0
+    badges_affected = 0
     for universeId in idsToRemove:
-        badgesAffected += getBadgeDB().universes[universeId].badge_count
+        badges_affected += getBadgeDB().universes[universeId].badge_count
         del getBadgeDB().universes[universeId]
     dbLock.release()
-    return AdminPurgeBadgeInfosGet200Response(badgesAffected)
+    return AdminPurgeBadgeInfosGet200Response(badges_affected)
 
 
 def admin_purge_universe_infos_post(body):  # noqa: E501
@@ -120,12 +120,12 @@ def admin_refresh_db_get():  # noqa: E501
     """
 
     dbLock.acquire()
-    badgesAffected = 0
+    badges_affected = 0
     for universeId in getBadgeDB().universes.keys():
-        badgesAffected += refreshUniverse(universeId)
+        badges_affected += refreshUniverse(universeId)
         updateBadgeIdCache(universeId)
     dbLock.release()
-    return AdminPurgeBadgeInfosGet200Response(badgesAffected)
+    return AdminPurgeBadgeInfosGet200Response(badges_affected)
 
 
 def admin_save_dbget():  # noqa: E501
@@ -152,9 +152,9 @@ def admin_start_check_get(universe_id):  # noqa: E501
     """
 
     universe_id = str(universe_id)
-    lastChecked = 0
+    last_checked = 0
     if universe_id in getBadgeDB().universes:
-        lastChecked = getBadgeDB().universes[universe_id].last_checked
+        last_checked = getBadgeDB().universes[universe_id].last_checked
 
     startCheck(universe_id)
-    return UserRequestCheckGet200Response(lastChecked, checkInProgress(universe_id))
+    return UserRequestCheckGet200Response(last_checked, check_in_progress(universe_id))

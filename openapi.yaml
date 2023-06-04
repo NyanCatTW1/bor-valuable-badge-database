@@ -135,10 +135,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  lastChecked:
+                  last_checked:
                     type: integer
                     example: 1683424605340
-                  checkInProgress:
+                  check_in_progress:
                     type: boolean
                     example: true
   /user/reportMissing:
@@ -163,7 +163,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  addedToQueue:
+                  added_to_queue:
                     type: integer
                     example: 0
     post:
@@ -186,7 +186,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  addedToQueue:
+                  added_to_queue:
                     type: integer
                     example: 0
   /user/dumpDB:
@@ -223,10 +223,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  lastChecked:
+                  last_checked:
                     type: integer
                     example: 1683424605340
-                  checkInProgress:
+                  check_in_progress:
                     type: boolean
                     example: true
   /admin/dumpDB:
@@ -277,7 +277,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  badgesAffected:
+                  badges_affected:
                     type: integer
                     example: 0
     post:
@@ -302,7 +302,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  badgesAffected:
+                  badges_affected:
                     type: integer
                     example: 0
   /admin/purgeUniverseInfos:
@@ -329,7 +329,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  badgesAffected:
+                  badges_affected:
                     type: integer
                     example: 0
     post:
@@ -354,7 +354,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  badgesAffected:
+                  badges_affected:
                     type: integer
                     example: 0
   /admin/refreshDB:
@@ -372,7 +372,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  badgesAffected:
+                  badges_affected:
                     type: integer
                     example: 0
 components:

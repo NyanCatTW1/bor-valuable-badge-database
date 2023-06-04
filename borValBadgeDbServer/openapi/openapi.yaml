@@ -560,36 +560,36 @@ components:
       type: object
     _user_requestCheck_get_200_response:
       example:
-        lastChecked: 1683424605340
-        checkInProgress: true
+        last_checked: 1683424605340
+        check_in_progress: true
       properties:
-        lastChecked:
+        last_checked:
           example: 1683424605340
-          title: lastChecked
+          title: last_checked
           type: integer
-        checkInProgress:
+        check_in_progress:
           example: true
-          title: checkInProgress
+          title: check_in_progress
           type: boolean
       title: _user_requestCheck_get_200_response
       type: object
     _user_reportMissing_get_200_response:
       example:
-        addedToQueue: 0
+        added_to_queue: 0
       properties:
-        addedToQueue:
+        added_to_queue:
           example: 0
-          title: addedToQueue
+          title: added_to_queue
           type: integer
       title: _user_reportMissing_get_200_response
       type: object
     _admin_purgeBadgeInfos_get_200_response:
       example:
-        badgesAffected: 0
+        badges_affected: 0
       properties:
-        badgesAffected:
+        badges_affected:
           example: 0
-          title: badgesAffected
+          title: badges_affected
           type: integer
       title: _admin_purgeBadgeInfos_get_200_response
       type: object

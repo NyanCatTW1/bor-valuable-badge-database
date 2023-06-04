@@ -26,10 +26,6 @@ class QueryByUniverseIdsGet200Response(Model):
             'data': List[UniverseInfo]
         }
 
-        self.attribute_map = {
-            'data': 'data'
-        }
-
         self._data = data
 
     @classmethod

@@ -4,7 +4,7 @@ from borValBadgeDbServer.models.user_request_check_get200_response import UserRe
 from borValBadgeDbServer.models.user_report_missing_get200_response import UserReportMissingGet200Response  # noqa: E501
 from borValBadgeDbServer import util
 from borValBadgeDbServer.db.db import getCachedBadgeDB, getBadgeDB, getBadgeIdCache
-from borValBadgeDbServer.db.checker import checkInProgress, startCheck, reportMissing
+from borValBadgeDbServer.db.checker import check_in_progress, startCheck, reportMissing
 
 
 def user_dump_dbget():  # noqa: E501
@@ -70,11 +70,11 @@ def user_request_check_get(universe_id):  # noqa: E501
     """
 
     universe_id = str(universe_id)
-    lastChecked = 0
+    last_checked = 0
     if universe_id in getBadgeDB().universes:
-        lastChecked = getBadgeDB().universes[universe_id].last_checked
+        last_checked = getBadgeDB().universes[universe_id].last_checked
 
-    if util.getTimestamp() - lastChecked >= 5 * 60 * 1000:
+    if util.getTimestamp() - last_checked >= 5 * 60 * 1000:
         startCheck(universe_id)
 
-    return UserRequestCheckGet200Response(lastChecked, checkInProgress(universe_id))
+    return UserRequestCheckGet200Response(last_checked, check_in_progress(universe_id))

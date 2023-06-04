@@ -73,6 +73,13 @@ def loadDatabase():
         updateBadgeIdCache(universeId)
     dbLock.release()
 
+    try:
+        from guppy import hpy
+        h = hpy()
+        print(h.heap().byrcs)
+    except ModuleNotFoundError:
+        pass
+
 
 def saveDatabase():
     print("Saving database...")
