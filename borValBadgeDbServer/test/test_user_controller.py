@@ -17,7 +17,7 @@ class TestUserController(BaseTestCase):
     def test_user_dump_dbget(self):
         """Test case for user_dump_dbget
 
-        Get a dump of the entire database. Updates every five minutes
+        Get a dump of the entire database. Updates every hour
         """
         headers = { 
             'Accept': 'application/json',

@@ -8,7 +8,7 @@ from borValBadgeDbServer.db.checker import check_in_progress, startCheck, report
 
 
 def user_dump_dbget():  # noqa: E501
-    """Get a dump of the entire database. Updates every five minutes
+    """Get a dump of the entire database. Updates every hour
 
      # noqa: E501
 

@@ -193,7 +193,7 @@ paths:
     get:
       tags:
       - user
-      summary: Get a dump of the entire database. Updates every five minutes
+      summary: Get a dump of the entire database. Updates every hour
       responses:
         '200':
           description: OK

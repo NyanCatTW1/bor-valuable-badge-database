@@ -286,7 +286,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Database'
           description: OK
-      summary: Get a dump of the entire database. Updates every five minutes
+      summary: Get a dump of the entire database. Updates every hour
       tags:
       - user
       x-openapi-router-controller: borValBadgeDbServer.controllers.user_controller
