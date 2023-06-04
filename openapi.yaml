@@ -393,9 +393,8 @@ components:
           type: integer
           example: 1159511221
         value:
-          type: string
-          enum: ["Free", "Valuable", "Legacy"]
-          example: "Legacy"
+          type: integer
+          example: 2
     UniverseInfo:
       type: object
       properties:
@@ -429,7 +428,7 @@ components:
               found: true
               created: 1558655968690
               awarding_universe: 1159511221
-              value: "Legacy"
+              value: 2
     Database:
       type: object
       properties:
@@ -451,7 +450,7 @@ components:
                   found: true
                   created: 1558655968690
                   awarding_universe: 1159511221
-                  value: "Legacy"
+                  value: 2
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

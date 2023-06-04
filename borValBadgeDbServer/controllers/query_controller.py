@@ -27,7 +27,7 @@ def query_by_badge_ids_get(badge_ids):  # noqa: E501
             if badgeId in getBadgeDB().universes[universeId].badges:
                 ret.append(getBadgeDB().universes[universeId].badges[badgeId])
             else:
-                ret.append(BadgeInfo(badgeId, True, 0, universeId, "Free"))
+                ret.append(BadgeInfo(badgeId, True, 0, universeId, 0))
         badge_ids -= idsToGet
 
     for missingId in badge_ids:

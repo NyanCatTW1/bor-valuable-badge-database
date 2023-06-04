@@ -368,7 +368,7 @@ components:
         created: 1558655968690
         badge_id: 2124469124
         awarding_universe: 1159511221
-        value: Legacy
+        value: 2
       properties:
         badge_id:
           example: 2124469124
@@ -387,13 +387,9 @@ components:
           title: awarding_universe
           type: integer
         value:
-          enum:
-          - Free
-          - Valuable
-          - Legacy
-          example: Legacy
+          example: 2
           title: value
-          type: string
+          type: integer
       title: BadgeInfo
       type: object
     UniverseInfo:
@@ -404,7 +400,7 @@ components:
             found: true
             created: 1558655968690
             awarding_universe: 1159511221
-            value: Legacy
+            value: 2
         found: true
         last_checked: 1683424605340
         universe_id: 1159511221
@@ -449,7 +445,7 @@ components:
               found: true
               created: 1558655968690
               awarding_universe: 1159511221
-              value: Legacy
+              value: 2
           title: badges
           type: object
       title: UniverseInfo
@@ -471,7 +467,7 @@ components:
                 found: true
                 created: 1558655968690
                 awarding_universe: 1159511221
-                value: Legacy
+                value: 2
       properties:
         universes:
           additionalProperties:
@@ -491,7 +487,7 @@ components:
                   found: true
                   created: 1558655968690
                   awarding_universe: 1159511221
-                  value: Legacy
+                  value: 2
           title: universes
           type: object
       title: Database
@@ -503,12 +499,12 @@ components:
           created: 1558655968690
           badge_id: 2124469124
           awarding_universe: 1159511221
-          value: Legacy
+          value: 2
         - found: true
           created: 1558655968690
           badge_id: 2124469124
           awarding_universe: 1159511221
-          value: Legacy
+          value: 2
       properties:
         data:
           items:
@@ -526,7 +522,7 @@ components:
               found: true
               created: 1558655968690
               awarding_universe: 1159511221
-              value: Legacy
+              value: 2
           found: true
           last_checked: 1683424605340
           universe_id: 1159511221
@@ -541,7 +537,7 @@ components:
               found: true
               created: 1558655968690
               awarding_universe: 1159511221
-              value: Legacy
+              value: 2
           found: true
           last_checked: 1683424605340
           universe_id: 1159511221

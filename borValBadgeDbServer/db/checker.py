@@ -83,15 +83,15 @@ def refreshUniverse(universeId):
         oldValue = getBadgeDB().universes[universeId].badges[badgeId].value
 
         if int(badgeId) <= 2124949326:
-            newValue = "Legacy"
+            newValue = 2  # Legacy
             badgesToCompact.discard(badgeId)
         elif int(badgeId) in valuableBadges:
-            newValue = "Valuable"
+            newValue = 1  # Valuable
             badgesToCompact.discard(badgeId)
             for k in range(max(0, i - 5), i):
                 badgesToCompact.discard(badgeIds[k])
         else:
-            newValue = "Free"
+            newValue = 0  # Free
 
         if oldValue != newValue:
             badges_affected.add(badgeId)
@@ -99,7 +99,7 @@ def refreshUniverse(universeId):
 
     for badgeId in badgesToCompact:
         badges_affected.add(badgeId)
-        assert getBadgeDB().universes[universeId].badges[badgeId].value == "Free"
+        assert getBadgeDB().universes[universeId].badges[badgeId].value == 0
         del getBadgeDB().universes[universeId].badges[badgeId]
         getBadgeDB().universes[universeId].free_badges.append(badgeId)
     return len(badges_affected)

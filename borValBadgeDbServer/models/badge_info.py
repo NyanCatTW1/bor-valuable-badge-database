@@ -13,7 +13,7 @@ badge_info_openapi_types = {
     'found': bool,
     'created': int,
     'awarding_universe': int,
-    'value': str
+    'value': int
 }
 
 
@@ -25,7 +25,7 @@ class BadgeInfo(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, badge_id=0, found=True, created=0, awarding_universe=0, value="Free"):  # noqa: E501
+    def __init__(self, badge_id=0, found=True, created=0, awarding_universe=0, value=0):  # noqa: E501
         """BadgeInfo - a model defined in OpenAPI
 
         :param badge_id: The badge_id of this BadgeInfo.  # noqa: E501
@@ -37,7 +37,7 @@ class BadgeInfo(Model):
         :param awarding_universe: The awarding_universe of this BadgeInfo.  # noqa: E501
         :type awarding_universe: int
         :param value: The value of this BadgeInfo.  # noqa: E501
-        :type value: str
+        :type value: int
         """
         self.openapi_types = badge_info_openapi_types
 
@@ -148,7 +148,7 @@ class BadgeInfo(Model):
 
 
         :return: The value of this BadgeInfo.
-        :rtype: str
+        :rtype: int
         """
         return self._value
 
@@ -158,13 +158,6 @@ class BadgeInfo(Model):
 
 
         :param value: The value of this BadgeInfo.
-        :type value: str
+        :type value: int
         """
-        allowed_values = ["Free", "Valuable", "Legacy"]  # noqa: E501
-        if value not in allowed_values:
-            raise ValueError(
-                "Invalid value for `value` ({0}), must be one of {1}"
-                .format(value, allowed_values)
-            )
-
         self._value = value

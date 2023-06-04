@@ -9,6 +9,7 @@ import time
 
 from borValBadgeDbServer.models.database import Database
 from borValBadgeDbServer.util import getTimestamp
+from borValBadgeDbServer.models.badge_info import BadgeInfo
 
 from apscheduler.schedulers.sync import Scheduler
 
@@ -76,7 +77,9 @@ def loadDatabase():
     try:
         from guppy import hpy
         h = hpy()
-        print(h.heap().byrcs)
+        heap = h.heap()
+        print(heap)
+        print(heap.byrcs)
     except ModuleNotFoundError:
         pass
 
