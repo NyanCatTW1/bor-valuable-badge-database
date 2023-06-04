@@ -74,6 +74,7 @@ def loadDatabase():
         updateBadgeIdCache(universeId)
     dbLock.release()
 
+    """
     try:
         from guppy import hpy
         h = hpy()
@@ -82,6 +83,7 @@ def loadDatabase():
         print(heap.byrcs)
     except ModuleNotFoundError:
         pass
+    """
 
 
 def saveDatabase():

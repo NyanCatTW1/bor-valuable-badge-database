@@ -41,7 +41,7 @@ def user_report_missing_get(badge_ids):  # noqa: E501
     for universeId in getBadgeDB().universes.keys():
         badge_ids -= getBadgeIdCache(universeId)
 
-    return UserReportMissingGet200Response(reportMissing([str(x) for x in badge_ids]))
+    return UserReportMissingGet200Response(reportMissing({str(x) for x in badge_ids}))
 
 
 def user_report_missing_post(body):  # noqa: E501

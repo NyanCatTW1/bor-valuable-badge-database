@@ -78,6 +78,7 @@ def refreshUniverse(universeId):
     badges_affected = set()
     badgeIds = list(map(str, sorted(map(int, getBadgeDB().universes[universeId].badges.keys()))))
     badgesToCompact = set(badgeIds)
+    curTime = util.getTimestamp()
     for i in range(len(badgeIds)):
         badgeId = badgeIds[i]
         oldValue = getBadgeDB().universes[universeId].badges[badgeId].value
@@ -92,6 +93,9 @@ def refreshUniverse(universeId):
                 badgesToCompact.discard(badgeIds[k])
         else:
             newValue = 0  # Free
+            # Don't compact badges created within the last 72 hours
+            if curTime - getBadgeDB().universes[universeId].badges[badgeId].created <= 3 * 24 * 60 * 60 * 1000:
+                badgesToCompact.discard(badgeId)
 
         if oldValue != newValue:
             badges_affected.add(badgeId)
