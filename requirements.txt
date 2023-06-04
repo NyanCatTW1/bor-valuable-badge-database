@@ -9,6 +9,6 @@ swagger-ui-bundle >= 0.0.2
 python_dateutil >= 2.6.0
 setuptools >= 21.0.0
 Flask == 2.1.1
-APScheduler
+APScheduler == 4.0.0a2
 requests
 python-dateutil
