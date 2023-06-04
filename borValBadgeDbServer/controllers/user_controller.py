@@ -3,7 +3,7 @@ import connexion
 from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
 from borValBadgeDbServer.models.user_report_missing_get200_response import UserReportMissingGet200Response  # noqa: E501
 from borValBadgeDbServer import util
-from borValBadgeDbServer.db.db import dbLock, getCachedBadgeDB, getBadgeDB, getBadgeIdCache
+from borValBadgeDbServer.db.db import getCachedBadgeDB, getBadgeDB, getBadgeIdCache
 from borValBadgeDbServer.db.checker import checkInProgress, startCheck, reportMissing
 
 
@@ -16,14 +16,12 @@ def user_dump_dbget():  # noqa: E501
     :rtype: Union[Database, Tuple[Database, int], Tuple[Database, int, Dict[str, str]]
     """
 
-    dbLock.acquire()
     ret = connexion.lifecycle.ConnexionResponse(
         status_code=200,
         content_type="application/json",
         mimetype="text/plain",
         body=getCachedBadgeDB()
     )
-    dbLock.release()
     return ret
 
 
@@ -40,10 +38,8 @@ def user_report_missing_get(badge_ids):  # noqa: E501
 
     badge_ids = {str(x) for x in badge_ids}
 
-    dbLock.acquire()
     for universeId in getBadgeDB().universes.keys():
         badge_ids -= getBadgeIdCache(universeId)
-    dbLock.release()
 
     return UserReportMissingGet200Response(reportMissing(badge_ids))
 
@@ -74,11 +70,9 @@ def user_request_check_get(universe_id):  # noqa: E501
     """
 
     universe_id = str(universe_id)
-    dbLock.acquire()
     lastChecked = 0
     if universe_id in getBadgeDB().universes:
         lastChecked = getBadgeDB().universes[universe_id].last_checked
-    dbLock.release()
 
     if util.getTimestamp() - lastChecked >= 5 * 60 * 1000:
         startCheck(universe_id)

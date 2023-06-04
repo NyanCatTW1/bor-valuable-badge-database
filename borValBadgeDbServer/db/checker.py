@@ -22,9 +22,7 @@ def checkInProgress(universeId):
 
 
 def checkWorker(universeId):
-    dbLock.acquire()
     universe: UniverseInfo = getBadgeDB().universes.get(universeId, UniverseInfo(int(universeId)))
-    dbLock.release()
 
     cursor = None
     name = None

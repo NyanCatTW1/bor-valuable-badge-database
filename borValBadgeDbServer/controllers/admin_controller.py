@@ -152,11 +152,9 @@ def admin_start_check_get(universe_id):  # noqa: E501
     """
 
     universe_id = str(universe_id)
-    dbLock.acquire()
     lastChecked = 0
     if universe_id in getBadgeDB().universes:
         lastChecked = getBadgeDB().universes[universe_id].last_checked
-    dbLock.release()
 
     startCheck(universe_id)
     return UserRequestCheckGet200Response(lastChecked, checkInProgress(universe_id))
