@@ -101,7 +101,7 @@ def refreshUniverse(universeId):
         badges_affected.add(badgeId)
         assert getBadgeDB().universes[universeId].badges[badgeId].value == 0
         del getBadgeDB().universes[universeId].badges[badgeId]
-        getBadgeDB().universes[universeId].free_badges.append(badgeId)
+        getBadgeDB().universes[universeId].free_badges.append(int(badgeId))
     return len(badges_affected)
 
 

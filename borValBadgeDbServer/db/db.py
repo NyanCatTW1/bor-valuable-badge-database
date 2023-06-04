@@ -42,7 +42,7 @@ def updateBadgeIdCache(universeId):
     if universeId not in badgeDB.universes and universeId in cachedBadgeIdsPerUniverse:
         del cachedBadgeIdsPerUniverse[universeId]
     else:
-        cachedBadgeIdsPerUniverse[universeId] = set(badgeDB.universes[universeId].badges.keys()) | set(badgeDB.universes[universeId].free_badges)
+        cachedBadgeIdsPerUniverse[universeId] = set(map(int, badgeDB.universes[universeId].badges.keys())) | set(badgeDB.universes[universeId].free_badges)
 
 
 def loadDatabase():

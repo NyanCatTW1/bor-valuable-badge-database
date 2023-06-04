@@ -41,7 +41,7 @@ def admin_purge_badge_infos_get(badge_ids):  # noqa: E501
     :rtype: Union[AdminPurgeBadgeInfosGet200Response, Tuple[AdminPurgeBadgeInfosGet200Response, int], Tuple[AdminPurgeBadgeInfosGet200Response, int, Dict[str, str]]
     """
 
-    badge_ids = {str(x) for x in badge_ids}
+    badge_ids = {int(x) for x in badge_ids}
 
     dbLock.acquire()
     badges_affected = 0
@@ -50,7 +50,7 @@ def admin_purge_badge_infos_get(badge_ids):  # noqa: E501
         badges_affected += len(idsToRemove)
         for badgeId in idsToRemove:
             if badgeId in getBadgeDB().universes[universeId]:
-                del getBadgeDB().universes[universeId].badges[badgeId]
+                del getBadgeDB().universes[universeId].badges[str(badgeId)]
             else:
                 getBadgeDB().universes[universeId].free_badges.remove(badgeId)
         getBadgeDB().universes[universeId].badge_count = len(getBadgeDB().universes[universeId].badges)

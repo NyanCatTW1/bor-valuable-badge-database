@@ -18,14 +18,14 @@ def query_by_badge_ids_get(badge_ids):  # noqa: E501
     :rtype: Union[QueryByBadgeIdsGet200Response, Tuple[QueryByBadgeIdsGet200Response, int], Tuple[QueryByBadgeIdsGet200Response, int, Dict[str, str]]
     """
 
-    badge_ids = {str(x) for x in badge_ids}
+    badge_ids = {int(x) for x in badge_ids}
     ret = []
 
     for universeId in getBadgeDB().universes.keys():
         idsToGet = badge_ids & getBadgeIdCache(universeId)
         for badgeId in idsToGet:
             if badgeId in getBadgeDB().universes[universeId].badges:
-                ret.append(getBadgeDB().universes[universeId].badges[badgeId])
+                ret.append(getBadgeDB().universes[universeId].badges[str(badgeId)])
             else:
                 ret.append(BadgeInfo(badgeId, True, 0, universeId, 0))
         badge_ids -= idsToGet

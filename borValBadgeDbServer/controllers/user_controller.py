@@ -36,12 +36,12 @@ def user_report_missing_get(badge_ids):  # noqa: E501
     :rtype: Union[UserReportMissingGet200Response, Tuple[UserReportMissingGet200Response, int], Tuple[UserReportMissingGet200Response, int, Dict[str, str]]
     """
 
-    badge_ids = {str(x) for x in badge_ids}
+    badge_ids = {int(x) for x in badge_ids}
 
     for universeId in getBadgeDB().universes.keys():
         badge_ids -= getBadgeIdCache(universeId)
 
-    return UserReportMissingGet200Response(reportMissing(badge_ids))
+    return UserReportMissingGet200Response(reportMissing([str(x) for x in badge_ids]))
 
 
 def user_report_missing_post(body):  # noqa: E501

@@ -15,7 +15,7 @@ universe_info_openapi_types = {
     'last_checked': int,
     'name': str,
     'badge_count': int,
-    'free_badges': List[str],
+    'free_badges': List[int],
     'badges': Dict[str, BadgeInfo]
 }
 
@@ -42,7 +42,7 @@ class UniverseInfo(Model):
         :param badge_count: The badge_count of this UniverseInfo.  # noqa: E501
         :type badge_count: int
         :param free_badges: The free_badges of this UniverseInfo.  # noqa: E501
-        :type free_badges: List[str]
+        :type free_badges: List[int]
         :param badges: The badges of this UniverseInfo.  # noqa: E501
         :type badges: Dict[str, BadgeInfo]
         """
@@ -185,7 +185,7 @@ class UniverseInfo(Model):
 
 
         :return: The free_badges of this UniverseInfo.
-        :rtype: List[str]
+        :rtype: List[int]
         """
         return self._free_badges
 
@@ -195,7 +195,7 @@ class UniverseInfo(Model):
 
 
         :param free_badges: The free_badges of this UniverseInfo.
-        :type free_badges: List[str]
+        :type free_badges: List[int]
         """
 
         self._free_badges = free_badges

@@ -406,8 +406,8 @@ components:
         universe_id: 1159511221
         name: "[30,000 Badges] Manner's Badge Walk"
         free_badges:
-        - "2124960830"
-        - "2124960830"
+        - 2124960830
+        - 2124960830
         badge_count: 30000
       properties:
         universe_id:
@@ -432,8 +432,8 @@ components:
           type: integer
         free_badges:
           items:
-            example: "2124960830"
-            type: string
+            example: 2124960830
+            type: integer
           title: free_badges
           type: array
         badges:
@@ -460,7 +460,7 @@ components:
             name: "[30,000 Badges] Manner's Badge Walk"
             badge_count: 30000
             free_badges:
-            - "2124960830"
+            - 2124960830
             badges:
               "2124469124":
                 badge_id: 2124469124
@@ -480,7 +480,7 @@ components:
               name: "[30,000 Badges] Manner's Badge Walk"
               badge_count: 30000
               free_badges:
-              - "2124960830"
+              - 2124960830
               badges:
                 "2124469124":
                   badge_id: 2124469124
@@ -528,8 +528,8 @@ components:
           universe_id: 1159511221
           name: "[30,000 Badges] Manner's Badge Walk"
           free_badges:
-          - "2124960830"
-          - "2124960830"
+          - 2124960830
+          - 2124960830
           badge_count: 30000
         - badges:
             "2124469124":
@@ -543,8 +543,8 @@ components:
           universe_id: 1159511221
           name: "[30,000 Badges] Manner's Badge Walk"
           free_badges:
-          - "2124960830"
-          - "2124960830"
+          - 2124960830
+          - 2124960830
           badge_count: 30000
       properties:
         data:

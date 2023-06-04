@@ -416,8 +416,8 @@ components:
         free_badges:
           type: array
           items:
-            type: string
-            example: "2124960830"
+            type: integer
+            example: 2124960830
         badges:
           type: object
           additionalProperties:
@@ -443,7 +443,7 @@ components:
               last_checked: 1683424605340
               name: "[30,000 Badges] Manner's Badge Walk"
               badge_count: 30000
-              free_badges: ["2124960830"]
+              free_badges: [2124960830]
               badges:
                 2124469124:
                   badge_id: 2124469124
