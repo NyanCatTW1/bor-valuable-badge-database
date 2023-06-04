@@ -97,10 +97,12 @@ def saveDatabase():
         toSave = gzip.compress(toSave)
 
         bakPath = dbPath + f"-{getTimestamp()}.bak"
-        shutil.copy2(dbPath, bakPath)
+        if os.path.isfile(dbPath):
+            shutil.copy2(dbPath, bakPath)
         with open(dbPath, "wb") as f:
             f.write(toSave)
-        os.remove(bakPath)
+        if os.path.isfile(bakPath):
+            os.remove(bakPath)
 
         endTime = time.time()
         print(f"Databased saved in {round(endTime - startTime, 2)} seconds")
