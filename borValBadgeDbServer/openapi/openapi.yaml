@@ -131,9 +131,9 @@ paths:
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-  /admin/refreshValues:
+  /admin/refreshDB:
     get:
-      operationId: admin_refresh_values_get
+      operationId: admin_refresh_db_get
       responses:
         "200":
           content:
@@ -143,7 +143,7 @@ paths:
           description: OK
       security:
       - ApiKeyAuth: []
-      summary: Redetermine values of all badges in the database
+      summary: Redetermine values of all badges in the database and compact it
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
@@ -409,6 +409,9 @@ components:
         last_checked: 1683424605340
         universe_id: 1159511221
         name: "[30,000 Badges] Manner's Badge Walk"
+        free_badges:
+        - "2124960830"
+        - "2124960830"
         badge_count: 30000
       properties:
         universe_id:
@@ -431,6 +434,12 @@ components:
           example: 30000
           title: badge_count
           type: integer
+        free_badges:
+          items:
+            example: "2124960830"
+            type: string
+          title: free_badges
+          type: array
         badges:
           additionalProperties:
             $ref: '#/components/schemas/BadgeInfo'
@@ -454,6 +463,8 @@ components:
             last_checked: 1683424605340
             name: "[30,000 Badges] Manner's Badge Walk"
             badge_count: 30000
+            free_badges:
+            - "2124960830"
             badges:
               "2124469124":
                 badge_id: 2124469124
@@ -472,6 +483,8 @@ components:
               last_checked: 1683424605340
               name: "[30,000 Badges] Manner's Badge Walk"
               badge_count: 30000
+              free_badges:
+              - "2124960830"
               badges:
                 "2124469124":
                   badge_id: 2124469124
@@ -518,6 +531,9 @@ components:
           last_checked: 1683424605340
           universe_id: 1159511221
           name: "[30,000 Badges] Manner's Badge Walk"
+          free_badges:
+          - "2124960830"
+          - "2124960830"
           badge_count: 30000
         - badges:
             "2124469124":
@@ -530,6 +546,9 @@ components:
           last_checked: 1683424605340
           universe_id: 1159511221
           name: "[30,000 Badges] Manner's Badge Walk"
+          free_badges:
+          - "2124960830"
+          - "2124960830"
           badge_count: 30000
       properties:
         data:

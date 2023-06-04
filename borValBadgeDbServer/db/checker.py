@@ -54,6 +54,7 @@ def checkWorker(universeId):
     if len(universe.badges) != 0:
         dbLock.acquire()
         getBadgeDB().universes[universeId] = universe
+        refreshUniverse(universeId)
         updateBadgeIdCache(universeId)
         dbLock.release()
 
@@ -63,7 +64,7 @@ def checkWorker(universeId):
     print(f"Finished check on {universeId}")
 
 
-def refreshValue(universeId):
+def refreshUniverse(universeId):
     valuableBadges = set()
 
     days = {}
@@ -76,21 +77,34 @@ def refreshValue(universeId):
     for day in days.values():
         valuableBadges.update(sorted(day)[5:])
 
-    badgesAffected = 0
-    for badgeId in getBadgeDB().universes[universeId].badges.keys():
+    badgesAffected = set()
+    badgeIds = list(map(str, sorted(map(int, getBadgeDB().universes[universeId].badges.keys()))))
+    badgesToCompact = set(badgeIds)
+    for i in range(len(badgeIds)):
+        badgeId = badgeIds[i]
         oldValue = getBadgeDB().universes[universeId].badges[badgeId].value
 
         if int(badgeId) <= 2124949326:
             newValue = "Legacy"
+            badgesToCompact.discard(badgeId)
         elif int(badgeId) in valuableBadges:
             newValue = "Valuable"
+            badgesToCompact.discard(badgeId)
+            for k in range(max(0, i - 5), i):
+                badgesToCompact.discard(badgeIds[k])
         else:
             newValue = "Free"
 
         if oldValue != newValue:
-            badgesAffected += 1
+            badgesAffected.add(badgeId)
         getBadgeDB().universes[universeId].badges[badgeId].value = newValue
-    return badgesAffected
+
+    for badgeId in badgesToCompact:
+        badgesAffected.add(badgeId)
+        assert getBadgeDB().universes[universeId].badges[badgeId].value == "Free"
+        del getBadgeDB().universes[universeId].badges[badgeId]
+        getBadgeDB().universes[universeId].free_badges.append(badgeId)
+    return len(badgesAffected)
 
 
 def startCheck(universeId):

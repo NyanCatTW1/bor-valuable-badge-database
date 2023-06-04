@@ -5,7 +5,7 @@ import json
 from borValBadgeDbServer.models.admin_purge_badge_infos_get200_response import AdminPurgeBadgeInfosGet200Response  # noqa: E501
 from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
 from borValBadgeDbServer.db.db import dbLock, getCachedBadgeDB, setCachedBadgeDB, getBadgeDB, saveDatabase, getBadgeIdCache, updateBadgeIdCache
-from borValBadgeDbServer.db.checker import checkInProgress, startCheck, refreshValue
+from borValBadgeDbServer.db.checker import checkInProgress, startCheck, refreshUniverse
 
 
 def admin_dump_dbget():  # noqa: E501
@@ -49,7 +49,10 @@ def admin_purge_badge_infos_get(badge_ids):  # noqa: E501
         idsToRemove = badge_ids & getBadgeIdCache(universeId)
         badgesAffected += len(idsToRemove)
         for badgeId in idsToRemove:
-            del getBadgeDB().universes[universeId].badges[badgeId]
+            if badgeId in getBadgeDB().universes[universeId]:
+                del getBadgeDB().universes[universeId].badges[badgeId]
+            else:
+                getBadgeDB().universes[universeId].free_badges.remove(badgeId)
         getBadgeDB().universes[universeId].badge_count = len(getBadgeDB().universes[universeId].badges)
         updateBadgeIdCache(universeId)
     dbLock.release()
@@ -107,8 +110,8 @@ def admin_purge_universe_infos_post(body):  # noqa: E501
     return admin_purge_universe_infos_get(body.decode().split(","))
 
 
-def admin_refresh_values_get():  # noqa: E501
-    """Redetermine values of all badges in the database
+def admin_refresh_db_get():  # noqa: E501
+    """Redetermine values of all badges in the database and compact it
 
      # noqa: E501
 
@@ -119,7 +122,7 @@ def admin_refresh_values_get():  # noqa: E501
     dbLock.acquire()
     badgesAffected = 0
     for universeId in getBadgeDB().universes.keys():
-        badgesAffected += refreshValue(universeId)
+        badgesAffected += refreshUniverse(universeId)
         updateBadgeIdCache(universeId)
     dbLock.release()
     return AdminPurgeBadgeInfosGet200Response(badgesAffected)

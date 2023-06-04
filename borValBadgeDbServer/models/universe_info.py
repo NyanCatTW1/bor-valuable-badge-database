@@ -16,7 +16,7 @@ class UniverseInfo(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, universe_id=0, found=True, last_checked=0, name="Unknown", badge_count=0, badges=None):  # noqa: E501
+    def __init__(self, universe_id=0, found=True, last_checked=0, name="Unknown", badge_count=0, free_badges=None, badges=None):  # noqa: E501
         """UniverseInfo - a model defined in OpenAPI
 
         :param universe_id: The universe_id of this UniverseInfo.  # noqa: E501
@@ -29,9 +29,15 @@ class UniverseInfo(Model):
         :type name: str
         :param badge_count: The badge_count of this UniverseInfo.  # noqa: E501
         :type badge_count: int
+        :param free_badges: The free_badges of this UniverseInfo.  # noqa: E501
+        :type free_badges: List[str]
         :param badges: The badges of this UniverseInfo.  # noqa: E501
         :type badges: Dict[str, BadgeInfo]
         """
+
+        if free_badges is None:
+            free_badges = []
+
         if badges is None:
             badges = {}
 
@@ -41,6 +47,7 @@ class UniverseInfo(Model):
             'last_checked': int,
             'name': str,
             'badge_count': int,
+            'free_badges': List[str],
             'badges': Dict[str, BadgeInfo]
         }
 
@@ -50,6 +57,7 @@ class UniverseInfo(Model):
             'last_checked': 'last_checked',
             'name': 'name',
             'badge_count': 'badge_count',
+            'free_badges': 'free_badges',
             'badges': 'badges'
         }
 
@@ -58,6 +66,7 @@ class UniverseInfo(Model):
         self._last_checked = last_checked
         self._name = name
         self._badge_count = badge_count
+        self._free_badges = free_badges
         self._badges = badges
 
     @classmethod
@@ -175,6 +184,27 @@ class UniverseInfo(Model):
         """
 
         self._badge_count = badge_count
+
+    @property
+    def free_badges(self):
+        """Gets the free_badges of this UniverseInfo.
+
+
+        :return: The free_badges of this UniverseInfo.
+        :rtype: List[str]
+        """
+        return self._free_badges
+
+    @free_badges.setter
+    def free_badges(self, free_badges):
+        """Sets the free_badges of this UniverseInfo.
+
+
+        :param free_badges: The free_badges of this UniverseInfo.
+        :type free_badges: List[str]
+        """
+
+        self._free_badges = free_badges
 
     @property
     def badges(self):

@@ -357,13 +357,13 @@ paths:
                   badgesAffected:
                     type: integer
                     example: 0
-  /admin/refreshValues:
+  /admin/refreshDB:
     get:
       tags:
       - admin
       security:
         - ApiKeyAuth: []
-      summary: Redetermine values of all badges in the database
+      summary: Redetermine values of all badges in the database and compact it
       responses:
         '200':
           description: OK
@@ -414,6 +414,11 @@ components:
         badge_count:
           type: integer
           example: 30000
+        free_badges:
+          type: array
+          items:
+            type: string
+            example: "2124960830"
         badges:
           type: object
           additionalProperties:
@@ -439,6 +444,7 @@ components:
               last_checked: 1683424605340
               name: "[30,000 Badges] Manner's Badge Walk"
               badge_count: 30000
+              free_badges: ["2124960830"]
               badges:
                 2124469124:
                   badge_id: 2124469124

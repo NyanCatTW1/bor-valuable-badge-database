@@ -22,10 +22,14 @@ def query_by_badge_ids_get(badge_ids):  # noqa: E501
     ret = []
 
     dbLock.acquire()
+    print(getBadgeIdCache("1906496086"))
     for universeId in getBadgeDB().universes.keys():
         idsToGet = badge_ids & getBadgeIdCache(universeId)
         for badgeId in idsToGet:
-            ret.append(getBadgeDB().universes[universeId].badges[badgeId])
+            if badgeId in getBadgeDB().universes[universeId].badges:
+                ret.append(getBadgeDB().universes[universeId].badges[badgeId])
+            else:
+                ret.append(BadgeInfo(badgeId, True, 0, universeId, "Free"))
         badge_ids -= idsToGet
     dbLock.release()
 
