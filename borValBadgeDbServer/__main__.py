@@ -18,7 +18,7 @@ def main():
                 arguments={'title': 'BoR Valuable Badge Database'},
                 pythonic_params=True)
     # https://stackoverflow.com/a/75504095
-    CORS(app.app, resources=["/api/v3/query/*", "/api/v3/user/*"])
+    CORS(app.app, resources=["/api/v3/query/*", "/api/v3/user/*"], supports_credentials=True)
     app.run(host="0.0.0.0", port=8080)
 
 
