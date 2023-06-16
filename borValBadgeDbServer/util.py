@@ -148,5 +148,7 @@ def _deserialize_dict(data, boxed_type):
 
 
 def getTimestamp():
-    # https://stackoverflow.com/a/60380427
-    return int(datetime.datetime.utcnow().timestamp() * 1e3)
+    # https://stackoverflow.com/a/22101249
+    d = datetime.datetime.utcnow()
+    epoch = datetime.datetime(1970, 1, 1)
+    return (d - epoch).total_seconds()

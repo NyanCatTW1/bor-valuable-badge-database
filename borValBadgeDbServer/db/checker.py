@@ -3,6 +3,7 @@ import requests
 import json
 from dateutil.parser import isoparse
 import time
+import calendar
 import sys
 
 from borValBadgeDbServer import util
@@ -37,7 +38,7 @@ def checkWorker(universeId):
         if "data" in resp:
             for badge in resp["data"]:
                 name = badge["awardingUniverse"]["name"]
-                created = int(time.mktime(isoparse(badge["created"]).timetuple()) * 1000)
+                created = calendar.timegm(isoparse(badge["created"]).utctimetuple())
                 if badge["id"] not in universe.free_badges:
                     universe.badges[str(badge["id"])] = BadgeInfo(badge["id"], True, created, int(universeId))
 
@@ -69,7 +70,7 @@ def refreshUniverse(universeId):
 
     days = {}
     for badgeId in getBadgeDB().universes[universeId].badges.keys():
-        day = getBadgeDB().universes[universeId].badges[badgeId].created // (24 * 60 * 60 * 1000)
+        day = getBadgeDB().universes[universeId].badges[badgeId].created // (24 * 60 * 60)
         if day not in days:
             days[day] = []
         days[day].append(int(badgeId))
@@ -96,7 +97,7 @@ def refreshUniverse(universeId):
         else:
             newValue = 0  # Free
             # Don't compact badges created within the last 72 hours
-            if curTime - getBadgeDB().universes[universeId].badges[badgeId].created <= 3 * 24 * 60 * 60 * 1000:
+            if curTime - getBadgeDB().universes[universeId].badges[badgeId].created <= 3 * 24 * 60 * 60:
                 badgesToCompact.discard(badgeId)
 
         if oldValue != newValue:
@@ -108,6 +109,7 @@ def refreshUniverse(universeId):
         assert getBadgeDB().universes[universeId].badges[badgeId].value == 0
         del getBadgeDB().universes[universeId].badges[badgeId]
         getBadgeDB().universes[universeId].free_badges.append(int(badgeId))
+    getBadgeDB().universes[universeId].free_badges.sort()
     return len(badges_affected)
 
 

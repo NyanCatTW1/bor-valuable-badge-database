@@ -65,7 +65,7 @@ def user_request_check_get(universe_id):  # noqa: E501
             if universe_id in getBadgeDB().universes:
                 last_checked = getBadgeDB().universes[universe_id].last_checked
 
-            if util.getTimestamp() - last_checked >= 5 * 60 * 1000:
+            if util.getTimestamp() - last_checked >= 5 * 60:
                 startCheck(universe_id)
 
             return UserRequestCheckGet200Response(last_checked, check_in_progress(universe_id))
