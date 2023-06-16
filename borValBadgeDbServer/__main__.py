@@ -13,12 +13,12 @@ def main():
     Thread(target=missingReportWorker, daemon=True).start()
 
     app = connexion.App(__name__, specification_dir='./openapi/')
-    CORS(app, resources=["/api/v3/query/*", "/api/v3/user/*"])
     app.app.json_encoder = encoder.JSONEncoder
     app.add_api('openapi.yaml',
                 arguments={'title': 'BoR Valuable Badge Database'},
                 pythonic_params=True)
-
+    # https://stackoverflow.com/a/75504095
+    CORS(app.app, resources=["/api/v3/query/*", "/api/v3/user/*"])
     app.run(host="0.0.0.0", port=8080)
 
 
