@@ -28,7 +28,7 @@ def checkWorker(universeId):
     cursor = None
     name = None
     while True:
-        oldCount = len(universe.badges)
+        oldCount = universe.badge_count
         url = f"https://badges.roblox.com/v1/universes/{universeId}/badges?limit=100&sortOrder=Desc"
         if cursor is not None:
             url += f"&cursor={cursor}"
@@ -41,7 +41,7 @@ def checkWorker(universeId):
                 universe.badges[str(badge["id"])] = BadgeInfo(badge["id"], True, created, int(universeId))
 
         cursor = resp["nextPageCursor"]
-        universe.badge_count = len(universe.badges)
+        universe.badge_count = len(universe.badges) + len(universe.free_badges)
         print(f"{universeId}: {oldCount} -> {universe.badge_count}", file=sys.stderr)
         if cursor is None or oldCount == universe.badge_count:
             break
@@ -50,7 +50,7 @@ def checkWorker(universeId):
         universe.name = name
     universe.last_checked = util.getTimestamp()
 
-    if len(universe.badges) != 0:
+    if universe.badge_count != 0:
         dbLock.acquire()
         getBadgeDB().universes[universeId] = universe
         refreshUniverse(universeId)
