@@ -38,7 +38,8 @@ def checkWorker(universeId):
             for badge in resp["data"]:
                 name = badge["awardingUniverse"]["name"]
                 created = int(time.mktime(isoparse(badge["created"]).timetuple()) * 1000)
-                universe.badges[str(badge["id"])] = BadgeInfo(badge["id"], True, created, int(universeId))
+                if badge["id"] not in universe.free_badges:
+                    universe.badges[str(badge["id"])] = BadgeInfo(badge["id"], True, created, int(universeId))
 
         cursor = resp["nextPageCursor"]
         universe.badge_count = len(universe.badges) + len(universe.free_badges)
