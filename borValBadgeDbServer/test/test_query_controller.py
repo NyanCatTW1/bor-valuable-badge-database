@@ -24,7 +24,7 @@ class TestQueryController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v3/query/byBadgeIds',
+            '/api/v3/query/bybadgeids',
             method='GET',
             headers=headers,
             query_string=query_string)
@@ -43,7 +43,7 @@ class TestQueryController(BaseTestCase):
             'Content-Type': 'text/plain',
         }
         response = self.client.open(
-            '/api/v3/query/byBadgeIds',
+            '/api/v3/query/bybadgeids',
             method='POST',
             headers=headers,
             data=json.dumps(body),
@@ -61,7 +61,7 @@ class TestQueryController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v3/query/byUniverseIds',
+            '/api/v3/query/byuniverseids',
             method='GET',
             headers=headers,
             query_string=query_string)
@@ -80,7 +80,7 @@ class TestQueryController(BaseTestCase):
             'Content-Type': 'text/plain',
         }
         response = self.client.open(
-            '/api/v3/query/byUniverseIds',
+            '/api/v3/query/byuniverseids',
             method='POST',
             headers=headers,
             data=json.dumps(body),

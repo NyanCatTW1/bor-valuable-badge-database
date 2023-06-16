@@ -15,7 +15,7 @@ tags:
 - description: Database management available to admins
   name: admin
 paths:
-  /admin/dumpDB:
+  /admin/dumpdb:
     get:
       operationId: admin_dump_dbget
       responses:
@@ -31,7 +31,7 @@ paths:
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-  /admin/purgeBadgeInfos:
+  /admin/purgebadgeinfos:
     get:
       operationId: admin_purge_badge_infos_get
       parameters:
@@ -50,7 +50,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_admin_purgeBadgeInfos_get_200_response'
+                $ref: '#/components/schemas/_admin_purgebadgeinfos_get_200_response'
           description: OK
       security:
       - ApiKeyAuth: []
@@ -73,7 +73,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_admin_purgeBadgeInfos_get_200_response'
+                $ref: '#/components/schemas/_admin_purgebadgeinfos_get_200_response'
           description: OK
       security:
       - ApiKeyAuth: []
@@ -81,7 +81,7 @@ paths:
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-  /admin/purgeUniverseInfos:
+  /admin/purgeuniverseinfos:
     get:
       operationId: admin_purge_universe_infos_get
       parameters:
@@ -100,7 +100,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_admin_purgeBadgeInfos_get_200_response'
+                $ref: '#/components/schemas/_admin_purgebadgeinfos_get_200_response'
           description: OK
       security:
       - ApiKeyAuth: []
@@ -123,7 +123,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_admin_purgeBadgeInfos_get_200_response'
+                $ref: '#/components/schemas/_admin_purgebadgeinfos_get_200_response'
           description: OK
       security:
       - ApiKeyAuth: []
@@ -131,7 +131,7 @@ paths:
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-  /admin/refreshDB:
+  /admin/refreshdb:
     get:
       operationId: admin_refresh_db_get
       responses:
@@ -139,7 +139,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_admin_purgeBadgeInfos_get_200_response'
+                $ref: '#/components/schemas/_admin_purgebadgeinfos_get_200_response'
           description: OK
       security:
       - ApiKeyAuth: []
@@ -147,7 +147,7 @@ paths:
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-  /admin/saveDB:
+  /admin/savedb:
     get:
       operationId: admin_save_dbget
       responses:
@@ -159,7 +159,7 @@ paths:
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-  /admin/startCheck:
+  /admin/startcheck:
     get:
       operationId: admin_start_check_get
       parameters:
@@ -176,7 +176,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_user_requestCheck_get_200_response'
+                $ref: '#/components/schemas/_user_requestcheck_get_200_response'
           description: OK
       security:
       - ApiKeyAuth: []
@@ -184,7 +184,7 @@ paths:
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-  /query/byBadgeIds:
+  /query/bybadgeids:
     get:
       operationId: query_by_badge_ids_get
       parameters:
@@ -203,7 +203,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_query_byBadgeIds_get_200_response'
+                $ref: '#/components/schemas/_query_bybadgeids_get_200_response'
           description: OK
       summary: Look up creation dates and values of badge ids
       tags:
@@ -224,13 +224,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_query_byBadgeIds_get_200_response'
+                $ref: '#/components/schemas/_query_bybadgeids_get_200_response'
           description: OK
       summary: Look up creation dates and values of badge ids
       tags:
       - query
       x-openapi-router-controller: borValBadgeDbServer.controllers.query_controller
-  /query/byUniverseIds:
+  /query/byuniverseids:
     get:
       operationId: query_by_universe_ids_get
       parameters:
@@ -249,7 +249,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_query_byUniverseIds_get_200_response'
+                $ref: '#/components/schemas/_query_byuniverseids_get_200_response'
           description: OK
       summary: Look up creation dates and values of all badges under universes
       tags:
@@ -270,13 +270,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_query_byUniverseIds_get_200_response'
+                $ref: '#/components/schemas/_query_byuniverseids_get_200_response'
           description: OK
       summary: Look up creation dates and values of all badges under universes
       tags:
       - query
       x-openapi-router-controller: borValBadgeDbServer.controllers.query_controller
-  /user/reportMissing:
+  /user/reportmissing:
     get:
       operationId: user_report_missing_get
       parameters:
@@ -295,7 +295,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_user_reportMissing_get_200_response'
+                $ref: '#/components/schemas/_user_reportmissing_get_200_response'
           description: OK
       summary: Run checks based on missing/unknown badge ids
       tags:
@@ -316,13 +316,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_user_reportMissing_get_200_response'
+                $ref: '#/components/schemas/_user_reportmissing_get_200_response'
           description: OK
       summary: Run checks based on missing/unknown badge ids
       tags:
       - user
       x-openapi-router-controller: borValBadgeDbServer.controllers.user_controller
-  /user/requestCheck:
+  /user/requestcheck:
     get:
       operationId: user_request_check_get
       parameters:
@@ -339,7 +339,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_user_requestCheck_get_200_response'
+                $ref: '#/components/schemas/_user_requestcheck_get_200_response'
           description: OK
       summary: Request a check/recheck of an universe. Gets ignored if the universe
         was last checked <5 mins ago
@@ -478,7 +478,7 @@ components:
           type: object
       title: Database
       type: object
-    _query_byBadgeIds_get_200_response:
+    _query_bybadgeids_get_200_response:
       example:
         data:
         - found: true
@@ -497,9 +497,9 @@ components:
             $ref: '#/components/schemas/BadgeInfo'
           title: data
           type: array
-      title: _query_byBadgeIds_get_200_response
+      title: _query_bybadgeids_get_200_response
       type: object
-    _query_byUniverseIds_get_200_response:
+    _query_byuniverseids_get_200_response:
       example:
         data:
         - badges:
@@ -538,9 +538,9 @@ components:
             $ref: '#/components/schemas/UniverseInfo'
           title: data
           type: array
-      title: _query_byUniverseIds_get_200_response
+      title: _query_byuniverseids_get_200_response
       type: object
-    _user_requestCheck_get_200_response:
+    _user_requestcheck_get_200_response:
       example:
         last_checked: 1683424605340
         check_in_progress: true
@@ -553,9 +553,9 @@ components:
           example: true
           title: check_in_progress
           type: boolean
-      title: _user_requestCheck_get_200_response
+      title: _user_requestcheck_get_200_response
       type: object
-    _user_reportMissing_get_200_response:
+    _user_reportmissing_get_200_response:
       example:
         added_to_queue: 0
       properties:
@@ -563,9 +563,9 @@ components:
           example: 0
           title: added_to_queue
           type: integer
-      title: _user_reportMissing_get_200_response
+      title: _user_reportmissing_get_200_response
       type: object
-    _admin_purgeBadgeInfos_get_200_response:
+    _admin_purgebadgeinfos_get_200_response:
       example:
         badges_affected: 0
       properties:
@@ -573,7 +573,7 @@ components:
           example: 0
           title: badges_affected
           type: integer
-      title: _admin_purgeBadgeInfos_get_200_response
+      title: _admin_purgebadgeinfos_get_200_response
       type: object
   securitySchemes:
     ApiKeyAuth:

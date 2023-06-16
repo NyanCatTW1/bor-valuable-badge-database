@@ -25,7 +25,7 @@ class TestAdminController(BaseTestCase):
             'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
-            '/api/v3/admin/dumpDB',
+            '/api/v3/admin/dumpdb',
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -42,7 +42,7 @@ class TestAdminController(BaseTestCase):
             'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
-            '/api/v3/admin/purgeBadgeInfos',
+            '/api/v3/admin/purgebadgeinfos',
             method='GET',
             headers=headers,
             query_string=query_string)
@@ -62,7 +62,7 @@ class TestAdminController(BaseTestCase):
             'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
-            '/api/v3/admin/purgeBadgeInfos',
+            '/api/v3/admin/purgebadgeinfos',
             method='POST',
             headers=headers,
             data=json.dumps(body),
@@ -81,7 +81,7 @@ class TestAdminController(BaseTestCase):
             'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
-            '/api/v3/admin/purgeUniverseInfos',
+            '/api/v3/admin/purgeuniverseinfos',
             method='GET',
             headers=headers,
             query_string=query_string)
@@ -101,7 +101,7 @@ class TestAdminController(BaseTestCase):
             'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
-            '/api/v3/admin/purgeUniverseInfos',
+            '/api/v3/admin/purgeuniverseinfos',
             method='POST',
             headers=headers,
             data=json.dumps(body),
@@ -119,7 +119,7 @@ class TestAdminController(BaseTestCase):
             'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
-            '/api/v3/admin/refreshDB',
+            '/api/v3/admin/refreshdb',
             method='GET',
             headers=headers)
         self.assert200(response,
@@ -136,7 +136,7 @@ class TestAdminController(BaseTestCase):
             'ApiKeyAuth': 'special-key',
         }
         response = self.client.open(
-            '/api/v3/admin/startCheck',
+            '/api/v3/admin/startcheck',
             method='GET',
             headers=headers,
             query_string=query_string)

@@ -24,7 +24,7 @@ class TestUserController(BaseTestCase):
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/api/v3/user/requestCheck',
+            '/api/v3/user/requestcheck',
             method='GET',
             headers=headers,
             query_string=query_string)

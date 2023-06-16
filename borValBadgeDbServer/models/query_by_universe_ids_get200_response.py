@@ -34,7 +34,7 @@ class QueryByUniverseIdsGet200Response(Model):
 
         :param dikt: A dict.
         :type: dict
-        :return: The _query_byUniverseIds_get_200_response of this QueryByUniverseIdsGet200Response.  # noqa: E501
+        :return: The _query_byuniverseids_get_200_response of this QueryByUniverseIdsGet200Response.  # noqa: E501
         :rtype: QueryByUniverseIdsGet200Response
         """
         return util.deserialize_model(dikt, cls)

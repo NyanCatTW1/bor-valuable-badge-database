@@ -15,7 +15,7 @@ tags:
   - name: admin
     description: Database management available to admins
 paths:
-  /query/byBadgeIds:
+  /query/bybadgeids:
     get:
       tags:
         - query
@@ -65,7 +65,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/BadgeInfo'
-  /query/byUniverseIds:
+  /query/byuniverseids:
     get:
       tags:
         - query
@@ -115,7 +115,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/UniverseInfo'
-  /user/requestCheck:
+  /user/requestcheck:
     get:
       tags:
       - user
@@ -141,7 +141,7 @@ paths:
                   check_in_progress:
                     type: boolean
                     example: true
-  /user/reportMissing:
+  /user/reportmissing:
     get:
       tags:
         - user
@@ -189,7 +189,7 @@ paths:
                   added_to_queue:
                     type: integer
                     example: 0
-  /admin/startCheck:
+  /admin/startcheck:
     get:
       tags:
       - admin
@@ -217,7 +217,7 @@ paths:
                   check_in_progress:
                     type: boolean
                     example: true
-  /admin/dumpDB:
+  /admin/dumpdb:
     get:
       tags:
       - admin
@@ -231,7 +231,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Database'
-  /admin/saveDB:
+  /admin/savedb:
     get:
       tags:
       - admin
@@ -241,7 +241,7 @@ paths:
       responses:
         '200':
           description: OK
-  /admin/purgeBadgeInfos:
+  /admin/purgebadgeinfos:
     get:
       tags:
       - admin
@@ -293,7 +293,7 @@ paths:
                   badges_affected:
                     type: integer
                     example: 0
-  /admin/purgeUniverseInfos:
+  /admin/purgeuniverseinfos:
     get:
       tags:
       - admin
@@ -345,7 +345,7 @@ paths:
                   badges_affected:
                     type: integer
                     example: 0
-  /admin/refreshDB:
+  /admin/refreshdb:
     get:
       tags:
       - admin

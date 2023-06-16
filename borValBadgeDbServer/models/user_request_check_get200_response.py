@@ -37,7 +37,7 @@ class UserRequestCheckGet200Response(Model):
 
         :param dikt: A dict.
         :type: dict
-        :return: The _user_requestCheck_get_200_response of this UserRequestCheckGet200Response.  # noqa: E501
+        :return: The _user_requestcheck_get_200_response of this UserRequestCheckGet200Response.  # noqa: E501
         :rtype: UserRequestCheckGet200Response
         """
         return util.deserialize_model(dikt, cls)

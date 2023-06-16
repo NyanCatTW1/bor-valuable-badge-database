@@ -34,7 +34,7 @@ class QueryByBadgeIdsGet200Response(Model):
 
         :param dikt: A dict.
         :type: dict
-        :return: The _query_byBadgeIds_get_200_response of this QueryByBadgeIdsGet200Response.  # noqa: E501
+        :return: The _query_bybadgeids_get_200_response of this QueryByBadgeIdsGet200Response.  # noqa: E501
         :rtype: QueryByBadgeIdsGet200Response
         """
         return util.deserialize_model(dikt, cls)

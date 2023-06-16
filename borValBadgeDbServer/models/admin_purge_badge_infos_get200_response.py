@@ -33,7 +33,7 @@ class AdminPurgeBadgeInfosGet200Response(Model):
 
         :param dikt: A dict.
         :type: dict
-        :return: The _admin_purgeBadgeInfos_get_200_response of this AdminPurgeBadgeInfosGet200Response.  # noqa: E501
+        :return: The _admin_purgebadgeinfos_get_200_response of this AdminPurgeBadgeInfosGet200Response.  # noqa: E501
         :rtype: AdminPurgeBadgeInfosGet200Response
         """
         return util.deserialize_model(dikt, cls)
