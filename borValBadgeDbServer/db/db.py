@@ -55,16 +55,16 @@ def loadDatabase():
         totalBadgeCount = 0
         for universe in badgeDB.universes.values():
             totalBadgeCount += universe.badge_count
-        print(f"Loaded {dbPath} with {len(badgeDB.universes)} universes and {totalBadgeCount} badges")
+        print(f"Loaded {dbPath} with {len(badgeDB.universes)} universes and {totalBadgeCount} badges", file=sys.stderr)
     except Exception:
         traceback.print_exc()
-        print(f"Failed to load {dbPath}! Using default")
+        print(f"Failed to load {dbPath}! Using default", file=sys.stderr)
         badgeDB = Database.from_dict({"universes": {}})
 
         if os.path.isfile(dbPath):
             bakPath = dbPath + f"-{getTimestamp()}.bak"
             shutil.copy2(dbPath, bakPath)
-            print(f"Copied {dbPath} to {bakPath}")
+            print(f"Copied {dbPath} to {bakPath}", file=sys.stderr)
 
     for universeId in badgeDB.universes.keys():
         updateBadgeIdCache(universeId)
@@ -75,15 +75,15 @@ def loadDatabase():
         from guppy import hpy
         h = hpy()
         heap = h.heap()
-        print(heap)
-        print(heap.byrcs)
+        print(heap, file=sys.stderr)
+        print(heap.byrcs, file=sys.stderr)
     except ModuleNotFoundError:
         pass
     """
 
 
 def saveDatabase():
-    print("Saving database...")
+    print("Saving database...", file=sys.stderr)
     startTime = time.time()
     try:
         dbLock.acquire()
@@ -101,7 +101,7 @@ def saveDatabase():
             os.remove(bakPath)
 
         endTime = time.time()
-        print(f"Databased saved in {round(endTime - startTime, 2)} seconds")
+        print(f"Databased saved in {round(endTime - startTime, 2)} seconds", file=sys.stderr)
     except Exception:
         traceback.print_exc()
-        print("Failed to save database!")
+        print("Failed to save database!", file=sys.stderr)

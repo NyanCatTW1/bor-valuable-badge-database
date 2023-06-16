@@ -3,6 +3,7 @@ import requests
 import json
 from dateutil.parser import isoparse
 import time
+import sys
 
 from borValBadgeDbServer import util
 from borValBadgeDbServer.models.badge_info import BadgeInfo
@@ -41,7 +42,7 @@ def checkWorker(universeId):
 
         cursor = resp["nextPageCursor"]
         universe.badge_count = len(universe.badges)
-        print(f"{universeId}: {oldCount} -> {universe.badge_count}")
+        print(f"{universeId}: {oldCount} -> {universe.badge_count}", file=sys.stderr)
         if cursor is None or oldCount == universe.badge_count:
             break
 
@@ -59,7 +60,7 @@ def checkWorker(universeId):
     checkLock.acquire()
     checksInProgress.remove(universeId)
     checkLock.release()
-    print(f"Finished check on {universeId}")
+    print(f"Finished check on {universeId}", file=sys.stderr)
 
 
 def refreshUniverse(universeId):
@@ -114,7 +115,7 @@ def startCheck(universeId):
         return
 
     checkLock.acquire()
-    print(f"Started check on {universeId}")
+    print(f"Started check on {universeId}", file=sys.stderr)
     checksInProgress.add(universeId)
     Thread(target=checkWorker, args=[universeId], daemon=True).start()
     checkLock.release()
