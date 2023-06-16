@@ -1,10 +1,11 @@
-import connexion
-
 from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
 from borValBadgeDbServer.models.user_report_missing_get200_response import UserReportMissingGet200Response  # noqa: E501
 from borValBadgeDbServer import util
-from borValBadgeDbServer.db.db import getCachedBadgeDB, getBadgeDB, getBadgeIdCache
+from borValBadgeDbServer.db.db import getBadgeDB, getBadgeIdCache
 from borValBadgeDbServer.db.checker import check_in_progress, startCheck, reportMissing
+
+import traceback
+import time
 
 
 def user_report_missing_get(badge_ids):  # noqa: E501
@@ -18,12 +19,17 @@ def user_report_missing_get(badge_ids):  # noqa: E501
     :rtype: Union[UserReportMissingGet200Response, Tuple[UserReportMissingGet200Response, int], Tuple[UserReportMissingGet200Response, int, Dict[str, str]]
     """
 
-    badge_ids = {int(x) for x in badge_ids}
+    for _attempt in range(5):
+        try:
+            badge_ids_todo = {int(x) for x in badge_ids}
+            for universeId in getBadgeDB().universes.keys():
+                badge_ids_todo -= getBadgeIdCache(universeId)
 
-    for universeId in getBadgeDB().universes.keys():
-        badge_ids -= getBadgeIdCache(universeId)
-
-    return UserReportMissingGet200Response(reportMissing({str(x) for x in badge_ids}))
+            return UserReportMissingGet200Response(reportMissing({str(x) for x in badge_ids_todo}))
+        except Exception:
+            traceback.print_exc()
+            time.sleep(0.1)
+    raise RuntimeError
 
 
 def user_report_missing_post(body):  # noqa: E501
@@ -52,11 +58,18 @@ def user_request_check_get(universe_id):  # noqa: E501
     """
 
     universe_id = str(universe_id)
-    last_checked = 0
-    if universe_id in getBadgeDB().universes:
-        last_checked = getBadgeDB().universes[universe_id].last_checked
 
-    if util.getTimestamp() - last_checked >= 5 * 60 * 1000:
-        startCheck(universe_id)
+    for _attempt in range(5):
+        try:
+            last_checked = 0
+            if universe_id in getBadgeDB().universes:
+                last_checked = getBadgeDB().universes[universe_id].last_checked
 
-    return UserRequestCheckGet200Response(last_checked, check_in_progress(universe_id))
+            if util.getTimestamp() - last_checked >= 5 * 60 * 1000:
+                startCheck(universe_id)
+
+            return UserRequestCheckGet200Response(last_checked, check_in_progress(universe_id))
+        except Exception:
+            traceback.print_exc()
+            time.sleep(0.1)
+    raise RuntimeError

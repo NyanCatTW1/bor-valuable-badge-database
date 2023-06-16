@@ -6,6 +6,9 @@ from borValBadgeDbServer.models.universe_info import UniverseInfo
 
 from borValBadgeDbServer.db.db import getBadgeDB, getBadgeIdCache
 
+import traceback
+import time
+
 
 def query_by_badge_ids_get(badge_ids):  # noqa: E501
     """Look up creation dates and values of badge ids
@@ -18,21 +21,27 @@ def query_by_badge_ids_get(badge_ids):  # noqa: E501
     :rtype: Union[QueryByBadgeIdsGet200Response, Tuple[QueryByBadgeIdsGet200Response, int], Tuple[QueryByBadgeIdsGet200Response, int, Dict[str, str]]
     """
 
-    badge_ids = {int(x) for x in badge_ids}
-    ret = []
+    for _attempt in range(5):
+        try:
+            badge_ids_todo = {int(x) for x in badge_ids}
+            ret = []
 
-    for universeId in getBadgeDB().universes.keys():
-        idsToGet = badge_ids & getBadgeIdCache(universeId)
-        for badgeId in idsToGet:
-            if str(badgeId) in getBadgeDB().universes[universeId].badges:
-                ret.append(getBadgeDB().universes[universeId].badges[str(badgeId)])
-            else:
-                ret.append(BadgeInfo(badgeId, True, 0, int(universeId), 0))
-        badge_ids -= idsToGet
+            for universeId in getBadgeDB().universes.keys():
+                idsToGet = badge_ids_todo & getBadgeIdCache(universeId)
+                for badgeId in idsToGet:
+                    if str(badgeId) in getBadgeDB().universes[universeId].badges:
+                        ret.append(getBadgeDB().universes[universeId].badges[str(badgeId)])
+                    else:
+                        ret.append(BadgeInfo(badgeId, True, 0, int(universeId), 0))
+                badge_ids_todo -= idsToGet
 
-    for missingId in badge_ids:
-        ret.append(BadgeInfo(missingId, False))
-    return QueryByBadgeIdsGet200Response(ret)
+            for missingId in badge_ids_todo:
+                ret.append(BadgeInfo(missingId, False))
+            return QueryByBadgeIdsGet200Response(ret)
+        except Exception:
+            traceback.print_exc()
+            time.sleep(0.1)
+    raise RuntimeError
 
 
 def query_by_badge_ids_post(body):  # noqa: E501
@@ -61,15 +70,22 @@ def query_by_universe_ids_get(universe_ids):  # noqa: E501
     """
 
     universe_ids = {str(x) for x in universe_ids}
-    ret = []
-    idsToGet = universe_ids & set(getBadgeDB().universes.keys())
-    for universeId in idsToGet:
-        ret.append(getBadgeDB().universes[universeId])
 
-    for missingId in universe_ids - idsToGet:
-        ret.append(UniverseInfo(missingId, False))
+    for _attempt in range(5):
+        try:
+            ret = []
+            idsToGet = universe_ids & set(getBadgeDB().universes.keys())
+            for universeId in idsToGet:
+                ret.append(getBadgeDB().universes[universeId])
 
-    return QueryByUniverseIdsGet200Response(ret)
+            for missingId in universe_ids - idsToGet:
+                ret.append(UniverseInfo(missingId, False))
+
+            return QueryByUniverseIdsGet200Response(ret)
+        except Exception:
+            traceback.print_exc()
+            time.sleep(0.1)
+    raise RuntimeError
 
 
 def query_by_universe_ids_post(body):  # noqa: E501
