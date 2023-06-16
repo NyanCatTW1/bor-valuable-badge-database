@@ -84,10 +84,10 @@ def refreshUniverse(universeId):
         badgeId = badgeIds[i]
         oldValue = getBadgeDB().universes[universeId].badges[badgeId].value
 
-        if int(badgeId) <= 2124949326:
+        if int(badgeId) <= 2124945818:
             newValue = 2  # Legacy
             badgesToCompact.discard(badgeId)
-        elif int(badgeId) in valuableBadges:
+        elif oldValue == 1 or int(badgeId) in valuableBadges:
             newValue = 1  # Valuable
             badgesToCompact.discard(badgeId)
             for k in range(max(0, i - 5), i):
