@@ -31,7 +31,7 @@ def setCachedBadgeDB(newDB):
 
 
 def getBadgeIdCache(universeId):
-    return cachedBadgeIdsPerUniverse[universeId]
+    return cachedBadgeIdsPerUniverse.get(universeId, set())
 
 
 def updateBadgeIdCache(universeId):
@@ -55,16 +55,16 @@ def loadDatabase():
         totalBadgeCount = 0
         for universe in badgeDB.universes.values():
             totalBadgeCount += universe.badge_count
-        print(f"Loaded {dbPath} with {len(badgeDB.universes)} universes and {totalBadgeCount} badges", file=sys.stderr)
+        print(f"loadDatabase: Loaded {dbPath} with {len(badgeDB.universes)} universes and {totalBadgeCount} badges", file=sys.stderr)
     except Exception:
         traceback.print_exc()
-        print(f"Failed to load {dbPath}! Using default", file=sys.stderr)
+        print(f"loadDatabase: Failed to load {dbPath}! Using default", file=sys.stderr)
         badgeDB = Database.from_dict({"universes": {}})
 
         if os.path.isfile(dbPath):
             bakPath = dbPath + f"-{getTimestamp()}.bak"
             shutil.copy2(dbPath, bakPath)
-            print(f"Copied {dbPath} to {bakPath}", file=sys.stderr)
+            print(f"loadDatabase: Copied {dbPath} to {bakPath}", file=sys.stderr)
 
     for universeId in badgeDB.universes.keys():
         updateBadgeIdCache(universeId)
@@ -83,7 +83,7 @@ def loadDatabase():
 
 
 def saveDatabase():
-    print("Saving database...", file=sys.stderr)
+    print("saveDatabase: Saving database...", file=sys.stderr)
     startTime = time.time()
     try:
         dbLock.acquire()
@@ -101,7 +101,7 @@ def saveDatabase():
             os.remove(bakPath)
 
         endTime = time.time()
-        print(f"Databased saved in {round(endTime - startTime, 2)} seconds", file=sys.stderr)
+        print(f"saveDatabase: Databased saved in {round(endTime - startTime, 2)} seconds", file=sys.stderr)
     except Exception:
         traceback.print_exc()
-        print("Failed to save database!", file=sys.stderr)
+        print("saveDatabase: Failed to save database!", file=sys.stderr)

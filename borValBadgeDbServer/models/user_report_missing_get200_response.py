@@ -15,17 +15,19 @@ class UserReportMissingGet200Response(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, added_to_queue=None):  # noqa: E501
+    def __init__(self, added_to_queue=None, missing_badges=None):  # noqa: E501
         """UserReportMissingGet200Response - a model defined in OpenAPI
 
         :param added_to_queue: The added_to_queue of this UserReportMissingGet200Response.  # noqa: E501
         :type added_to_queue: int
         """
         self.openapi_types = {
-            'added_to_queue': int
+            'added_to_queue': int,
+            'missing_badges': int,
         }
 
         self._added_to_queue = added_to_queue
+        self._missing_badges = missing_badges
 
     @classmethod
     def from_dict(cls, dikt) -> 'UserReportMissingGet200Response':
@@ -58,3 +60,24 @@ class UserReportMissingGet200Response(Model):
         """
 
         self._added_to_queue = added_to_queue
+
+    @property
+    def missing_badges(self):
+        """Gets the missing_badges of this UserReportMissingGet200Response.
+
+
+        :return: The missing_badges of this UserReportMissingGet200Response.
+        :rtype: int
+        """
+        return self._missing_badges
+
+    @missing_badges.setter
+    def missing_badges(self, missing_badges):
+        """Sets the missing_badges of this UserReportMissingGet200Response.
+
+
+        :param missing_badges: The missing_badges of this UserReportMissingGet200Response.
+        :type missing_badges: int
+        """
+
+        self._missing_badges = missing_badges

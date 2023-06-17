@@ -10,7 +10,8 @@ from borValBadgeDbServer.db.checker import missingReportWorker
 def main():
     loadDatabase()
 
-    Thread(target=missingReportWorker, daemon=True).start()
+    for _t in range(6):
+        Thread(target=missingReportWorker, daemon=True).start()
 
     app = connexion.App(__name__, specification_dir='./openapi/')
     app.app.json_encoder = encoder.JSONEncoder

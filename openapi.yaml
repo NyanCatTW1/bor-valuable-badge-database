@@ -166,6 +166,9 @@ paths:
                   added_to_queue:
                     type: integer
                     example: 0
+                  missing_badges:
+                    type: integer
+                    example: 0
     post:
       tags:
         - user
@@ -187,6 +190,9 @@ paths:
                 type: object
                 properties:
                   added_to_queue:
+                    type: integer
+                    example: 0
+                  missing_badges:
                     type: integer
                     example: 0
   /admin/startcheck:

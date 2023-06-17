@@ -45,7 +45,7 @@ def admin_purge_badge_infos_get(badge_ids):  # noqa: E501
 
     dbLock.acquire()
     badges_affected = 0
-    for universeId in getBadgeDB().universes.keys():
+    for universeId in list(getBadgeDB().universes.keys()):
         idsToRemove = badge_ids & getBadgeIdCache(universeId)
         badges_affected += len(idsToRemove)
         for badgeId in idsToRemove:
@@ -121,7 +121,7 @@ def admin_refresh_db_get():  # noqa: E501
 
     dbLock.acquire()
     badges_affected = 0
-    for universeId in getBadgeDB().universes.keys():
+    for universeId in list(getBadgeDB().universes.keys()):
         badges_affected += refreshUniverse(universeId)
         updateBadgeIdCache(universeId)
     dbLock.release()

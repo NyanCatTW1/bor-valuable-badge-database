@@ -26,7 +26,7 @@ def query_by_badge_ids_get(badge_ids):  # noqa: E501
             badge_ids_todo = {int(x) for x in badge_ids}
             ret = []
 
-            for universeId in getBadgeDB().universes.keys():
+            for universeId in list(getBadgeDB().universes.keys()):
                 idsToGet = badge_ids_todo & getBadgeIdCache(universeId)
                 for badgeId in idsToGet:
                     if str(badgeId) in getBadgeDB().universes[universeId].badges:

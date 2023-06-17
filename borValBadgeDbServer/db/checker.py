@@ -5,15 +5,17 @@ from dateutil.parser import isoparse
 import time
 import calendar
 import sys
+import traceback
 
 from borValBadgeDbServer import util
 from borValBadgeDbServer.models.badge_info import BadgeInfo
 from borValBadgeDbServer.models.universe_info import UniverseInfo
-from borValBadgeDbServer.db.db import dbLock, getBadgeDB, updateBadgeIdCache
+from borValBadgeDbServer.db.db import dbLock, getBadgeDB, updateBadgeIdCache, getBadgeIdCache
 
 checkLock = Lock()
 checksInProgress = set()
 missingReports = set()
+missingReportsProcessed = 0
 
 
 def check_in_progress(universeId):
@@ -44,7 +46,8 @@ def checkWorker(universeId):
 
         cursor = resp["nextPageCursor"]
         universe.badge_count = len(universe.badges) + len(universe.free_badges)
-        print(f"{universeId}: {oldCount} -> {universe.badge_count}", file=sys.stderr)
+        if oldCount != universe.badge_count:
+            print(f"checkWorker@{universeId}: {oldCount} -> {universe.badge_count}", file=sys.stderr)
         if cursor is None or oldCount == universe.badge_count:
             break
 
@@ -62,7 +65,7 @@ def checkWorker(universeId):
     checkLock.acquire()
     checksInProgress.remove(universeId)
     checkLock.release()
-    print(f"Finished check on {universeId}", file=sys.stderr)
+    print(f"checkWorker@{universeId}: Finished check", file=sys.stderr)
 
 
 def refreshUniverse(universeId):
@@ -118,7 +121,6 @@ def startCheck(universeId):
         return
 
     checkLock.acquire()
-    print(f"Started check on {universeId}", file=sys.stderr)
     checksInProgress.add(universeId)
     Thread(target=checkWorker, args=[universeId], daemon=True).start()
     checkLock.release()
@@ -126,22 +128,44 @@ def startCheck(universeId):
 
 def missingReportWorker():
     while True:
-        checkLock.acquire()
-        if len(missingReports) == 0:
+        try:
+            checkLock.acquire()
+            if len(missingReports) == 0:
+                checkLock.release()
+                time.sleep(0.01)
+                continue
+
+            toCheck = missingReports.pop()
+
+            global missingReportsProcessed
+            missingReportsProcessed += 1
+            if missingReportsProcessed % 50 == 0 or len(missingReports) == 0:
+                print(f"missingReportWorker: {len(missingReports)} left to process", file=sys.stderr)
             checkLock.release()
-            time.sleep(0.01)
-            continue
 
-        toCheck = missingReports.pop()
-        checkLock.release()
+            badgeRecorded = False
 
-        url = f"https://badges.roblox.com/v1/badges/{toCheck}"
-        resp = json.loads(requests.get(url).text)
-        if "awardingUniverse" not in resp:
-            continue
+            try:
+                for universeId in list(getBadgeDB().universes.keys()):
+                    if toCheck in getBadgeIdCache(universeId):
+                        badgeRecorded = True
+                        break
+            except Exception:
+                traceback.print_exc()
 
-        universeId = str(resp["awardingUniverse"]["id"])
-        startCheck(universeId)
+            if badgeRecorded:
+                continue
+
+            url = f"https://badges.roblox.com/v1/badges/{toCheck}"
+            resp = json.loads(requests.get(url).text)
+            if "awardingUniverse" not in resp:
+                continue
+
+            universeId = str(resp["awardingUniverse"]["id"])
+            if universeId not in getBadgeDB().universes:
+                startCheck(universeId)
+        except Exception:
+            traceback.print_exc()
 
 
 def reportMissing(badgeIds):

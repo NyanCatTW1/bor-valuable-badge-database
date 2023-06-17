@@ -558,10 +558,15 @@ components:
     _user_reportmissing_get_200_response:
       example:
         added_to_queue: 0
+        missing_badges: 0
       properties:
         added_to_queue:
           example: 0
           title: added_to_queue
+          type: integer
+        missing_badges:
+          example: 0
+          title: missing_badges
           type: integer
       title: _user_reportmissing_get_200_response
       type: object
