@@ -21,10 +21,7 @@ def user_report_missing_get(badge_ids):  # noqa: E501
 
     for _attempt in range(5):
         try:
-            badge_ids_todo = {int(x) for x in badge_ids}
-            for universeId in list(getBadgeDB().universes.keys()):
-                badge_ids_todo -= getBadgeIdCache(universeId)
-
+            badge_ids_todo = {int(x) for x in badge_ids} - getBadgeIdCache().keys()
             return UserReportMissingGet200Response(reportMissing({str(x) for x in badge_ids_todo}), len(badge_ids_todo))
         except Exception:
             traceback.print_exc()

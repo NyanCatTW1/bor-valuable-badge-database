@@ -26,16 +26,16 @@ def query_by_badge_ids_get(badge_ids):  # noqa: E501
             badge_ids_todo = {int(x) for x in badge_ids}
             ret = []
 
-            for universeId in list(getBadgeDB().universes.keys()):
-                idsToGet = badge_ids_todo & getBadgeIdCache(universeId)
-                for badgeId in idsToGet:
-                    if str(badgeId) in getBadgeDB().universes[universeId].badges:
-                        ret.append(getBadgeDB().universes[universeId].badges[str(badgeId)])
-                    else:
-                        ret.append(BadgeInfo(badgeId, True, 0, int(universeId), 0))
-                badge_ids_todo -= idsToGet
+            idsToGet = badge_ids_todo & getBadgeIdCache().keys()
+            for badgeId in idsToGet:
+                universeId = getBadgeIdCache()[badgeId]
+                if str(badgeId) in getBadgeDB().universes[universeId].badges:
+                    ret.append(getBadgeDB().universes[universeId].badges[str(badgeId)])
+                else:
+                    ret.append(BadgeInfo(badgeId, True, 0, int(universeId), 0))
+            badge_ids_todo -= idsToGet
 
-            for missingId in badge_ids_todo:
+            for missingId in badge_ids_todo - idsToGet:
                 ret.append(BadgeInfo(missingId, False))
             return QueryByBadgeIdsGet200Response(ret)
         except Exception:

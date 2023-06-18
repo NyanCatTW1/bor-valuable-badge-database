@@ -143,17 +143,7 @@ def missingReportWorker():
                 print(f"missingReportWorker: {len(missingReports)} left to process", file=sys.stderr)
             checkLock.release()
 
-            badgeRecorded = False
-
-            try:
-                for universeId in list(getBadgeDB().universes.keys()):
-                    if toCheck in getBadgeIdCache(universeId):
-                        badgeRecorded = True
-                        break
-            except Exception:
-                traceback.print_exc()
-
-            if badgeRecorded:
+            if toCheck in getBadgeIdCache():
                 continue
 
             url = f"https://badges.roblox.com/v1/badges/{toCheck}"

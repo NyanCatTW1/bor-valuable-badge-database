@@ -5,7 +5,6 @@ import traceback
 from threading import Lock
 import shutil
 import gzip
-import time
 
 from borValBadgeDbServer.models.database import Database
 from borValBadgeDbServer.util import getTimestamp
@@ -13,32 +12,23 @@ from borValBadgeDbServer.util import getTimestamp
 dbPath = None
 dbLock = Lock()
 badgeDB: Database = None
-cachedBadgeDB = None
-cachedBadgeIdsPerUniverse = {}
+badgeIdCache = {}
 
 
 def getBadgeDB():
     return badgeDB
 
 
-def getCachedBadgeDB():
-    return cachedBadgeDB
-
-
-def setCachedBadgeDB(newDB):
-    global cachedBadgeDB
-    cachedBadgeDB = newDB
-
-
-def getBadgeIdCache(universeId):
-    return cachedBadgeIdsPerUniverse.get(universeId, set())
+def getBadgeIdCache():
+    return badgeIdCache
 
 
 def updateBadgeIdCache(universeId):
-    if universeId not in badgeDB.universes and universeId in cachedBadgeIdsPerUniverse:
-        del cachedBadgeIdsPerUniverse[universeId]
-    else:
-        cachedBadgeIdsPerUniverse[universeId] = set(map(int, badgeDB.universes[universeId].badges.keys())) | set(badgeDB.universes[universeId].free_badges)
+    for badgeId in map(int, badgeDB.universes[universeId].badges.keys()):
+        badgeIdCache[badgeId] = universeId
+
+    for badgeId in badgeDB.universes[universeId].free_badges:
+        badgeIdCache[badgeId] = universeId
 
 
 def loadDatabase():
@@ -80,28 +70,3 @@ def loadDatabase():
     except ModuleNotFoundError:
         pass
     """
-
-
-def saveDatabase():
-    print("saveDatabase: Saving database...", file=sys.stderr)
-    startTime = time.time()
-    try:
-        dbLock.acquire()
-        setCachedBadgeDB(json.dumps(badgeDB.to_dict()) + "\n")
-        toSave = getCachedBadgeDB().encode("ascii")
-        dbLock.release()
-        toSave = gzip.compress(toSave)
-
-        bakPath = dbPath + f"-{getTimestamp()}.bak"
-        if os.path.isfile(dbPath):
-            shutil.copy2(dbPath, bakPath)
-        with open(dbPath, "wb") as f:
-            f.write(toSave)
-        if os.path.isfile(bakPath):
-            os.remove(bakPath)
-
-        endTime = time.time()
-        print(f"saveDatabase: Databased saved in {round(endTime - startTime, 2)} seconds", file=sys.stderr)
-    except Exception:
-        traceback.print_exc()
-        print("saveDatabase: Failed to save database!", file=sys.stderr)

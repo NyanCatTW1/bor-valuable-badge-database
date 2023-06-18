@@ -3,7 +3,7 @@
 # flake8: noqa
 from __future__ import absolute_import
 # import models into model package
-from borValBadgeDbServer.models.admin_purge_badge_infos_get200_response import AdminPurgeBadgeInfosGet200Response
+from borValBadgeDbServer.models.admin_purge_universe_infos_get200_response import AdminPurgeUniverseInfosGet200Response
 from borValBadgeDbServer.models.badge_info import BadgeInfo
 from borValBadgeDbServer.models.database import Database
 from borValBadgeDbServer.models.query_by_badge_ids_get200_response import QueryByBadgeIdsGet200Response

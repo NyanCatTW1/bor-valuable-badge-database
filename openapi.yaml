@@ -237,68 +237,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Database'
-  /admin/savedb:
-    get:
-      tags:
-      - admin
-      security:
-        - ApiKeyAuth: []
-      summary: Save the database right now
-      responses:
-        '200':
-          description: OK
-  /admin/purgebadgeinfos:
-    get:
-      tags:
-      - admin
-      security:
-        - ApiKeyAuth: []
-      summary: Purge cached info of badges
-      parameters:
-        - in: query
-          name: badgeIds
-          schema:
-            type: array
-            items:
-              type: integer
-          required: true
-          description: The CSV of badge ids
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  badges_affected:
-                    type: integer
-                    example: 0
-    post:
-      tags:
-      - admin
-      security:
-        - ApiKeyAuth: []
-      summary: Purge cached info of badges
-      requestBody:
-        description: The CSV of badge ids
-        required: true
-        content:
-          text/plain:
-            schema:
-              type: string
-              example: 2124469124
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  badges_affected:
-                    type: integer
-                    example: 0
   /admin/purgeuniverseinfos:
     get:
       tags:

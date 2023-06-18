@@ -2,9 +2,9 @@ import connexion
 
 import json
 
-from borValBadgeDbServer.models.admin_purge_badge_infos_get200_response import AdminPurgeBadgeInfosGet200Response  # noqa: E501
+from borValBadgeDbServer.models.admin_purge_universe_infos_get200_response import AdminPurgeUniverseInfosGet200Response  # noqa: E501
 from borValBadgeDbServer.models.user_request_check_get200_response import UserRequestCheckGet200Response  # noqa: E501
-from borValBadgeDbServer.db.db import dbLock, getCachedBadgeDB, setCachedBadgeDB, getBadgeDB, saveDatabase, getBadgeIdCache, updateBadgeIdCache
+from borValBadgeDbServer.db.db import dbLock, getBadgeDB, getBadgeIdCache, updateBadgeIdCache
 from borValBadgeDbServer.db.checker import check_in_progress, startCheck, refreshUniverse
 
 
@@ -18,59 +18,15 @@ def admin_dump_dbget():  # noqa: E501
     """
 
     dbLock.acquire()
-    setCachedBadgeDB(json.dumps(getBadgeDB().to_dict()) + "\n")
-
+    dump = json.dumps(getBadgeDB().to_dict()) + "\n"
     ret = connexion.lifecycle.ConnexionResponse(
         status_code=200,
         content_type="application/json",
         mimetype="text/plain",
-        body=getCachedBadgeDB()
+        body=dump
     )
     dbLock.release()
     return ret
-
-
-def admin_purge_badge_infos_get(badge_ids):  # noqa: E501
-    """Purge cached info of badges
-
-     # noqa: E501
-
-    :param badge_ids: The CSV of badge ids
-    :type badge_ids: List[int]
-
-    :rtype: Union[AdminPurgeBadgeInfosGet200Response, Tuple[AdminPurgeBadgeInfosGet200Response, int], Tuple[AdminPurgeBadgeInfosGet200Response, int, Dict[str, str]]
-    """
-
-    badge_ids = {int(x) for x in badge_ids}
-
-    dbLock.acquire()
-    badges_affected = 0
-    for universeId in list(getBadgeDB().universes.keys()):
-        idsToRemove = badge_ids & getBadgeIdCache(universeId)
-        badges_affected += len(idsToRemove)
-        for badgeId in idsToRemove:
-            if badgeId in getBadgeDB().universes[universeId]:
-                del getBadgeDB().universes[universeId].badges[str(badgeId)]
-            else:
-                getBadgeDB().universes[universeId].free_badges.remove(badgeId)
-        getBadgeDB().universes[universeId].badge_count = len(getBadgeDB().universes[universeId].badges)
-        updateBadgeIdCache(universeId)
-    dbLock.release()
-    return AdminPurgeBadgeInfosGet200Response(badges_affected)
-
-
-def admin_purge_badge_infos_post(body):  # noqa: E501
-    """Purge cached info of badges
-
-     # noqa: E501
-
-    :param body: The CSV of badge ids
-    :type body: str
-
-    :rtype: Union[AdminPurgeBadgeInfosGet200Response, Tuple[AdminPurgeBadgeInfosGet200Response, int], Tuple[AdminPurgeBadgeInfosGet200Response, int, Dict[str, str]]
-    """
-
-    return admin_purge_badge_infos_get(body.decode().split(","))
 
 
 def admin_purge_universe_infos_get(universe_ids):  # noqa: E501
@@ -81,7 +37,7 @@ def admin_purge_universe_infos_get(universe_ids):  # noqa: E501
     :param universe_ids: The CSV of universe ids
     :type universe_ids: List[int]
 
-    :rtype: Union[AdminPurgeBadgeInfosGet200Response, Tuple[AdminPurgeBadgeInfosGet200Response, int], Tuple[AdminPurgeBadgeInfosGet200Response, int, Dict[str, str]]
+    :rtype: Union[AdminPurgeUniverseInfosGet200Response, Tuple[AdminPurgeUniverseInfosGet200Response, int], Tuple[AdminPurgeUniverseInfosGet200Response, int, Dict[str, str]]
     """
 
     universe_ids = {str(x) for x in universe_ids}
@@ -91,9 +47,15 @@ def admin_purge_universe_infos_get(universe_ids):  # noqa: E501
     badges_affected = 0
     for universeId in idsToRemove:
         badges_affected += getBadgeDB().universes[universeId].badge_count
+        for badgeId in getBadgeDB().universes[universeId].badges.keys():
+            del getBadgeIdCache()[int(badgeId)]
+
+        for badgeId in getBadgeDB().universes[universeId].free_badges:
+            del getBadgeIdCache()[badgeId]
+
         del getBadgeDB().universes[universeId]
     dbLock.release()
-    return AdminPurgeBadgeInfosGet200Response(badges_affected)
+    return AdminPurgeUniverseInfosGet200Response(badges_affected)
 
 
 def admin_purge_universe_infos_post(body):  # noqa: E501
@@ -104,7 +66,7 @@ def admin_purge_universe_infos_post(body):  # noqa: E501
     :param body: The CSV of universe ids
     :type body: str
 
-    :rtype: Union[AdminPurgeBadgeInfosGet200Response, Tuple[AdminPurgeBadgeInfosGet200Response, int], Tuple[AdminPurgeBadgeInfosGet200Response, int, Dict[str, str]]
+    :rtype: Union[AdminPurgeUniverseInfosGet200Response, Tuple[AdminPurgeUniverseInfosGet200Response, int], Tuple[AdminPurgeUniverseInfosGet200Response, int, Dict[str, str]]
     """
 
     return admin_purge_universe_infos_get(body.decode().split(","))
@@ -116,28 +78,19 @@ def admin_refresh_db_get():  # noqa: E501
      # noqa: E501
 
 
-    :rtype: Union[AdminPurgeBadgeInfosGet200Response, Tuple[AdminPurgeBadgeInfosGet200Response, int], Tuple[AdminPurgeBadgeInfosGet200Response, int, Dict[str, str]]
+    :rtype: Union[AdminPurgeUniverseInfosGet200Response, Tuple[AdminPurgeUniverseInfosGet200Response, int], Tuple[AdminPurgeUniverseInfosGet200Response, int, Dict[str, str]]
     """
 
     dbLock.acquire()
     badges_affected = 0
     for universeId in list(getBadgeDB().universes.keys()):
         badges_affected += refreshUniverse(universeId)
+
+    getBadgeIdCache().clear()
+    for universeId in getBadgeDB().universes.keys():
         updateBadgeIdCache(universeId)
     dbLock.release()
-    return AdminPurgeBadgeInfosGet200Response(badges_affected)
-
-
-def admin_save_dbget():  # noqa: E501
-    """Save the database right now
-
-     # noqa: E501
-
-
-    :rtype: Union[None, Tuple[None, int], Tuple[None, int, Dict[str, str]]
-    """
-
-    saveDatabase()
+    return AdminPurgeUniverseInfosGet200Response(badges_affected)
 
 
 def admin_start_check_get(universe_id):  # noqa: E501

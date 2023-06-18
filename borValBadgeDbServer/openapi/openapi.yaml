@@ -31,56 +31,6 @@ paths:
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-  /admin/purgebadgeinfos:
-    get:
-      operationId: admin_purge_badge_infos_get
-      parameters:
-      - description: The CSV of badge ids
-        explode: true
-        in: query
-        name: badgeIds
-        required: true
-        schema:
-          items:
-            type: integer
-          type: array
-        style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/_admin_purgebadgeinfos_get_200_response'
-          description: OK
-      security:
-      - ApiKeyAuth: []
-      summary: Purge cached info of badges
-      tags:
-      - admin
-      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-    post:
-      operationId: admin_purge_badge_infos_post
-      requestBody:
-        content:
-          text/plain:
-            schema:
-              example: "2124469124"
-              type: string
-        description: The CSV of badge ids
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/_admin_purgebadgeinfos_get_200_response'
-          description: OK
-      security:
-      - ApiKeyAuth: []
-      summary: Purge cached info of badges
-      tags:
-      - admin
-      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
   /admin/purgeuniverseinfos:
     get:
       operationId: admin_purge_universe_infos_get
@@ -100,7 +50,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_admin_purgebadgeinfos_get_200_response'
+                $ref: '#/components/schemas/_admin_purgeuniverseinfos_get_200_response'
           description: OK
       security:
       - ApiKeyAuth: []
@@ -123,7 +73,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_admin_purgebadgeinfos_get_200_response'
+                $ref: '#/components/schemas/_admin_purgeuniverseinfos_get_200_response'
           description: OK
       security:
       - ApiKeyAuth: []
@@ -139,23 +89,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/_admin_purgebadgeinfos_get_200_response'
+                $ref: '#/components/schemas/_admin_purgeuniverseinfos_get_200_response'
           description: OK
       security:
       - ApiKeyAuth: []
       summary: Redetermine values of all badges in the database and compact it
-      tags:
-      - admin
-      x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
-  /admin/savedb:
-    get:
-      operationId: admin_save_dbget
-      responses:
-        "200":
-          description: OK
-      security:
-      - ApiKeyAuth: []
-      summary: Save the database right now
       tags:
       - admin
       x-openapi-router-controller: borValBadgeDbServer.controllers.admin_controller
@@ -570,7 +508,7 @@ components:
           type: integer
       title: _user_reportmissing_get_200_response
       type: object
-    _admin_purgebadgeinfos_get_200_response:
+    _admin_purgeuniverseinfos_get_200_response:
       example:
         badges_affected: 0
       properties:
@@ -578,7 +516,7 @@ components:
           example: 0
           title: badges_affected
           type: integer
-      title: _admin_purgebadgeinfos_get_200_response
+      title: _admin_purgeuniverseinfos_get_200_response
       type: object
   securitySchemes:
     ApiKeyAuth:
