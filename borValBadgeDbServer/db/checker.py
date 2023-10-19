@@ -32,24 +32,28 @@ def checkWorker(universeId):
     cursor = None
     name = None
     while True:
-        oldCount = universe.badge_count
-        url = f"https://badges.roblox.com/v1/universes/{universeId}/badges?limit=100&sortOrder=Desc"
-        if cursor is not None:
-            url += f"&cursor={cursor}"
+        try:
+            oldCount = universe.badge_count
+            url = f"https://badges.roblox.com/v1/universes/{universeId}/badges?limit=100&sortOrder=Desc"
+            if cursor is not None:
+                url += f"&cursor={cursor}"
 
-        resp = json.loads(requests.get(url).text)
-        if "data" in resp:
-            for badge in resp["data"]:
-                name = badge["awardingUniverse"]["name"]
-                created = calendar.timegm(isoparse(badge["created"]).utctimetuple())
-                if badge["id"] not in universe.free_badges:
-                    universe.badges[str(badge["id"])] = BadgeInfo(badge["id"], True, created, int(universeId))
+            resp = json.loads(requests.get(url).text)
+            if "data" in resp:
+                for badge in resp["data"]:
+                    name = badge["awardingUniverse"]["name"]
+                    created = calendar.timegm(isoparse(badge["created"]).utctimetuple())
+                    if badge["id"] not in universe.free_badges:
+                        universe.badges[str(badge["id"])] = BadgeInfo(badge["id"], True, created, int(universeId))
 
-        cursor = resp["nextPageCursor"]
-        universe.badge_count = len(universe.badges) + len(universe.free_badges)
-        print(f"checkWorker@{universeId}: {oldCount} -> {universe.badge_count}. Next cursor: {cursor}", file=sys.stderr)
-        if cursor is None or oldCount == universe.badge_count:
-            break
+            cursor = resp["nextPageCursor"]
+            universe.badge_count = len(universe.badges) + len(universe.free_badges)
+            print(f"checkWorker@{universeId}: {oldCount} -> {universe.badge_count}. Next cursor: {cursor}", file=sys.stderr)
+            if cursor is None or oldCount == universe.badge_count:
+                break
+        except Exception:
+            traceback.print_exc()
+            time.sleep(0.1)
 
     if name is not None:
         universe.name = name
