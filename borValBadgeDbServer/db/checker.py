@@ -26,6 +26,7 @@ def check_in_progress(universeId):
 
 
 def checkWorker(universeId):
+    print(f"checkWorker@{universeId}: Check started", file=sys.stderr)
     universe: UniverseInfo = getBadgeDB().universes.get(universeId, UniverseInfo(int(universeId)))
 
     cursor = None
@@ -46,8 +47,7 @@ def checkWorker(universeId):
 
         cursor = resp["nextPageCursor"]
         universe.badge_count = len(universe.badges) + len(universe.free_badges)
-        if oldCount != universe.badge_count:
-            print(f"checkWorker@{universeId}: {oldCount} -> {universe.badge_count}", file=sys.stderr)
+        print(f"checkWorker@{universeId}: {oldCount} -> {universe.badge_count}. Next cursor: {cursor}", file=sys.stderr)
         if cursor is None or oldCount == universe.badge_count:
             break
 
