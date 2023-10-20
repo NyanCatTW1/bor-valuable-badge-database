@@ -155,9 +155,7 @@ def missingReportWorker():
             if "awardingUniverse" not in resp:
                 continue
 
-            universeId = str(resp["awardingUniverse"]["id"])
-            if universeId not in getBadgeDB().universes:
-                startCheck(universeId)
+            startCheck(str(resp["awardingUniverse"]["id"]))
         except Exception:
             traceback.print_exc()
 
