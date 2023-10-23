@@ -121,12 +121,10 @@ def refreshUniverse(universeId):
 
 
 def startCheck(universeId):
-    if check_in_progress(universeId):
-        return
-
     checkLock.acquire()
-    checksInProgress.add(universeId)
-    Thread(target=checkWorker, args=[universeId], daemon=True).start()
+    if universeId not in checksInProgress:
+        checksInProgress.add(universeId)
+        Thread(target=checkWorker, args=[universeId], daemon=True).start()
     checkLock.release()
 
 
