@@ -62,7 +62,7 @@ def checkWorker(universeId):
     if universe.badge_count != 0:
         dbLock.acquire()
         getBadgeDB().universes[universeId] = universe
-        refreshUniverse(universeId)
+        refreshUniverse(universeId, True)
         updateBadgeIdCache(universeId)
         dbLock.release()
 
@@ -72,7 +72,7 @@ def checkWorker(universeId):
     print(f"checkWorker@{universeId}: Finished check", file=sys.stderr)
 
 
-def refreshUniverse(universeId):
+def refreshUniverse(universeId, doCompact=False):
     valuableBadges = set()
 
     badges = []
@@ -117,12 +117,13 @@ def refreshUniverse(universeId):
             badges_affected.add(badge)
         getBadgeDB().universes[universeId].badges[badge[1]].value = newValue
 
-    for badge in badgesToCompact:
-        print("Compact", badge)
-        badges_affected.add(badge)
-        assert getBadgeDB().universes[universeId].badges[badge[1]].value == 0
-        del getBadgeDB().universes[universeId].badges[badge[1]]
-        getBadgeDB().universes[universeId].free_badges.append(int(badge[1]))
+    if doCompact:
+        for badge in badgesToCompact:
+            print("Compact", badge)
+            badges_affected.add(badge)
+            assert getBadgeDB().universes[universeId].badges[badge[1]].value == 0
+            del getBadgeDB().universes[universeId].badges[badge[1]]
+            getBadgeDB().universes[universeId].free_badges.append(int(badge[1]))
     getBadgeDB().universes[universeId].free_badges.sort()
     return len(badges_affected)
 
