@@ -75,47 +75,54 @@ def checkWorker(universeId):
 def refreshUniverse(universeId):
     valuableBadges = set()
 
+    badges = []
     days = {}
     for badgeId in getBadgeDB().universes[universeId].badges.keys():
-        day = getBadgeDB().universes[universeId].badges[badgeId].created // (24 * 60 * 60)
+        createdAt = getBadgeDB().universes[universeId].badges[badgeId].created
+        badge = (createdAt, badgeId)
+        badges.append(badge)
+
+        day = createdAt // (24 * 60 * 60)
         if day not in days:
             days[day] = []
-        days[day].append(int(badgeId))
+        days[day].append(badge)
 
     for day in days.values():
         valuableBadges.update(sorted(day)[5:])
 
+    badges.sort()
     badges_affected = set()
-    badgeIds = list(map(str, sorted(map(int, getBadgeDB().universes[universeId].badges.keys()))))
-    badgesToCompact = set(badgeIds)
+    badgesToCompact = set(badges)
     curTime = util.getTimestamp()
-    for i in range(len(badgeIds)):
-        badgeId = badgeIds[i]
-        oldValue = getBadgeDB().universes[universeId].badges[badgeId].value
+    for i in range(len(badges)):
+        badge = badges[i]
+        oldValue = getBadgeDB().universes[universeId].badges[badge[1]].value
 
-        if int(badgeId) <= 2124945818:
+        if int(badge[1]) <= 2124945818:
             newValue = 2  # Legacy
-            badgesToCompact.discard(badgeId)
-        elif oldValue == 1 or int(badgeId) in valuableBadges:
+            badgesToCompact.discard(badge)
+        elif badge in valuableBadges:
             newValue = 1  # Valuable
-            badgesToCompact.discard(badgeId)
+            badgesToCompact.discard(badge)
             for k in range(max(0, i - 5), i):
-                badgesToCompact.discard(badgeIds[k])
+                badgesToCompact.discard(badges[k])
         else:
             newValue = 0  # Free
             # Don't compact badges created within the last 72 hours
-            if curTime - getBadgeDB().universes[universeId].badges[badgeId].created <= 3 * 24 * 60 * 60:
-                badgesToCompact.discard(badgeId)
+            if curTime - badge[0] <= 3 * 24 * 60 * 60:
+                badgesToCompact.discard(badge)
 
         if oldValue != newValue:
-            badges_affected.add(badgeId)
-        getBadgeDB().universes[universeId].badges[badgeId].value = newValue
+            print(badge, oldValue, "->", newValue)
+            badges_affected.add(badge)
+        getBadgeDB().universes[universeId].badges[badge[1]].value = newValue
 
-    for badgeId in badgesToCompact:
-        badges_affected.add(badgeId)
-        assert getBadgeDB().universes[universeId].badges[badgeId].value == 0
-        del getBadgeDB().universes[universeId].badges[badgeId]
-        getBadgeDB().universes[universeId].free_badges.append(int(badgeId))
+    for badge in badgesToCompact:
+        print("Compact", badge)
+        badges_affected.add(badge)
+        assert getBadgeDB().universes[universeId].badges[badge[1]].value == 0
+        del getBadgeDB().universes[universeId].badges[badge[1]]
+        getBadgeDB().universes[universeId].free_badges.append(int(badge[1]))
     getBadgeDB().universes[universeId].free_badges.sort()
     return len(badges_affected)
 
