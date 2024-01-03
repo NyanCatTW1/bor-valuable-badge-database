@@ -38,7 +38,7 @@ def checkWorker(universeId):
             if cursor is not None:
                 url += f"&cursor={cursor}"
 
-            resp = json.loads(requests.get(url).text)
+            resp = json.loads(requests.get(url, timeout=30).text)
             if "data" in resp:
                 for badge in resp["data"]:
                     name = badge["awardingUniverse"]["name"]
