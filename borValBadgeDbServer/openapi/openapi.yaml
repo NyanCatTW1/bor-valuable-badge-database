@@ -293,6 +293,7 @@ components:
         badge_id: 2124469124
         awarding_universe: 1159511221
         value: 2
+        is_nvl: false
       properties:
         badge_id:
           example: 2124469124
@@ -314,6 +315,10 @@ components:
           example: 2
           title: value
           type: integer
+        is_nvl:
+          example: false
+          title: is_nvl
+          type: boolean
       title: BadgeInfo
       type: object
     UniverseInfo:
@@ -325,6 +330,7 @@ components:
             created: 1558655968690
             awarding_universe: 1159511221
             value: 2
+            is_nvl: false
         found: true
         last_checked: 1683424605340
         universe_id: 1159511221
@@ -370,6 +376,7 @@ components:
               created: 1558655968690
               awarding_universe: 1159511221
               value: 2
+              is_nvl: false
           title: badges
           type: object
       title: UniverseInfo
@@ -392,6 +399,7 @@ components:
                 created: 1558655968690
                 awarding_universe: 1159511221
                 value: 2
+                is_nvl: false
       properties:
         universes:
           additionalProperties:
@@ -412,6 +420,7 @@ components:
                   created: 1558655968690
                   awarding_universe: 1159511221
                   value: 2
+                  is_nvl: false
           title: universes
           type: object
       title: Database
@@ -424,11 +433,13 @@ components:
           badge_id: 2124469124
           awarding_universe: 1159511221
           value: 2
+          is_nvl: false
         - found: true
           created: 1558655968690
           badge_id: 2124469124
           awarding_universe: 1159511221
           value: 2
+          is_nvl: false
       properties:
         data:
           items:
@@ -447,6 +458,7 @@ components:
               created: 1558655968690
               awarding_universe: 1159511221
               value: 2
+              is_nvl: false
           found: true
           last_checked: 1683424605340
           universe_id: 1159511221
@@ -462,6 +474,7 @@ components:
               created: 1558655968690
               awarding_universe: 1159511221
               value: 2
+              is_nvl: false
           found: true
           last_checked: 1683424605340
           universe_id: 1159511221

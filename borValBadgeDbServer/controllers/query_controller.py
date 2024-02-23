@@ -4,7 +4,7 @@ from borValBadgeDbServer.models.query_by_universe_ids_get200_response import Que
 from borValBadgeDbServer.models.badge_info import BadgeInfo
 from borValBadgeDbServer.models.universe_info import UniverseInfo
 
-from borValBadgeDbServer.db.db import getBadgeDB, getBadgeIdCache
+from borValBadgeDbServer.db.db import getBadgeDB, getBadgeIdCache, isNVL
 
 import traceback
 import time
@@ -32,7 +32,7 @@ def query_by_badge_ids_get(badge_ids):  # noqa: E501
                 if str(badgeId) in getBadgeDB().universes[universeId].badges:
                     ret.append(getBadgeDB().universes[universeId].badges[str(badgeId)])
                 else:
-                    ret.append(BadgeInfo(badgeId, True, 0, int(universeId), 0))
+                    ret.append(BadgeInfo(badgeId, True, 0, int(universeId), 0, isNVL(badgeId)))
             badge_ids_todo -= idsToGet
 
             for missingId in badge_ids_todo - idsToGet:

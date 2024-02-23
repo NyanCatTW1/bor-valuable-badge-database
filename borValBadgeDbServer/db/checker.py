@@ -10,7 +10,7 @@ import traceback
 from borValBadgeDbServer import util
 from borValBadgeDbServer.models.badge_info import BadgeInfo
 from borValBadgeDbServer.models.universe_info import UniverseInfo
-from borValBadgeDbServer.db.db import dbLock, getBadgeDB, updateBadgeIdCache, getBadgeIdCache
+from borValBadgeDbServer.db.db import dbLock, getBadgeDB, updateBadgeIdCache, getBadgeIdCache, isNVL
 
 checkLock = Lock()
 checksInProgress = set()
@@ -44,7 +44,7 @@ def checkWorker(universeId):
                     name = badge["awardingUniverse"]["name"]
                     created = calendar.timegm(isoparse(badge["created"]).utctimetuple())
                     if badge["id"] not in universe.free_badges:
-                        universe.badges[str(badge["id"])] = BadgeInfo(badge["id"], True, created, int(universeId))
+                        universe.badges[str(badge["id"])] = BadgeInfo(badge["id"], True, created, int(universeId), isNVL(badge["id"]))
 
             cursor = resp["nextPageCursor"]
             universe.badge_count = len(universe.badges) + len(universe.free_badges)
