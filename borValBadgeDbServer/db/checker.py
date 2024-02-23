@@ -113,9 +113,16 @@ def refreshUniverse(universeId, doCompact=False):
                 badgesToCompact.discard(badge)
 
         if oldValue != newValue:
-            print(badge, oldValue, "->", newValue)
+            print(f"{badge}: Value {oldValue} -> {newValue}")
             badges_affected.add(badge)
         getBadgeDB().universes[universeId].badges[badge[1]].value = newValue
+
+        oldIsNVL = getBadgeDB().universes[universeId].badges[badge[1]].is_nvl
+        newIsNVL = isNVL(badge[1])
+        if oldIsNVL != newIsNVL:
+            print(f"{badge}: isNVL {oldIsNVL} -> {newIsNVL}")
+            badges_affected.add(badge)
+        getBadgeDB().universes[universeId].badges[badge[1]].is_nvl = newIsNVL
 
     if doCompact:
         for badge in badgesToCompact:

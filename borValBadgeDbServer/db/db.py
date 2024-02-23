@@ -41,9 +41,10 @@ def loadDatabase():
     dbLock.acquire()
     global nvlList
     for nvl in open("nonvaluablelegacybadges.txt").read().replace(",", " ").split():
-        if nvl in ["20006347", "20006350", "20006359"] or int(nvl) < 17170400:
+        if nvl in ["20006347", "20006350", "20006359", "17911219"] or int(nvl) < 17170400:
             continue
         nvlList.add(nvl)
+    print(f"loadDatabase: Loaded {len(nvlList)} NVLs")
 
     global dbPath
     if len(sys.argv) < 2:
